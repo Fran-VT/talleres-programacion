@@ -1,0 +1,22 @@
+# Ambiente y desarrollo de cuadernos
+*.ipynb_checkpoints
+*.RData
+*.Rhistory
+**/tmp
+
+# Versiones alpha
+**/ignorar
+#**/*AA*.Rmd
+#**/*AA*.html
+#**/*MM*.Rmd
+#**/*MM*.html
+
+# Archivos de sincronización con R-Pubs
+**/rsconnect
+*.dcf
+
+# Archivos de datos absurdamente pesados
+**/*.gz
+**/*.tar
+
+# Archivos varios

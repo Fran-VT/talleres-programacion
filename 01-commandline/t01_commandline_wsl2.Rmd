@@ -1,0 +1,95 @@
+---
+{title: "Linea de comandos", subtitle: "POSIX en Windows" ,
+date: '2020-11-10',
+author: "Alejandro Acevedo-Aracena, _PhD_^[_FONDECYT Postdoctoral Fellow_, Universidad de Chile, deepen.data@gmail.com]; Manuel Muñoz-González^[_Pregrado_, Universidad de Chile]", output: {html_document: {theme: flatly, highlight: tango, toc: true, toc_float: {collapsed: false, smooth_scroll: true}, df_print: paged, code_folding: show}, html_notebook: default}}
+---
+<!--
+La linea de comandos, tambien llamada interfaz por terminal, es una forma de hablar mas directamente con las computadoras. 
+Más introducción -->
+
+# Instalando lineas de comandos POSIX en Windows
+
+## Gestor de paquetes en Windows
+
+A diferencia de la mayor parte de los sistemas Linux, Windows no trae nativamente un gestor de paquetes, aka. _una utilidad encargada de instalar programas desde un repositorio central_, como **apt** o **CRAN**.
+
+Existen alternativas de terceros, como [Chocolatey](https:/www.chocolatey.org/), que nos permiten instalar programas via comandos. 
+
+**Consideraciones**
+
+- Esto requiere una terminal Powershell en modo administrador (porque estará instalando programas) 
+- Requiere internet (para acceso al repo de programas)
+- Requerimientos adicionales aplican a WSL2  
+
+Para instalar Chocolatey, se usa la linea de comandos de Powershell de Windows
+
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force;
+iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+```
+
+La instalación dura unos pocos segundos, y luego se puede convocar a Chocolatey con el comando `choco`. 
+
+## Instalando WSL2 en Windows
+
+Las ultimas versiones de Windows incluyen un Kernel Linux que corre de forma paralela al Kernel Windows NT propio de Windows. 
+Este se denomina [_Windows Subsystem for Linux_](https://docs.microsoft.com/en-us/windows/wsl/install-win10), y es capaz de correr aplicaciones para Linux, hasta sistemas operativos como Ubuntu o Mint. 
+
+WSL2 es la segunda versión mayor de este, con compatibilidad y rendimiento mejorados.
+
+**Consideraciones**
+
+- Requiere Windows posterior a 1903, ie. la versión de Marzo 2019
+
+Para instalar WSL2, lo más facil es usando `choco install wsl2 --yes` desde la consola en modo administrador. 
+
+Despues de completar la instalación, es necesario reiniciar la computadora para que pueda iniciar el Kernel Linux. Desde la misma consola Powershell con `Restart-Computer`. 
+
+## Instalando Ubuntu como subsitema en Windows
+
+La opción más efectiva es desde la [Tienda de Windows](https://www.microsoft.com/store/productId/9N6SVWS3RX71). 
+Tambien es posible usar Chocolatey, pero por limitaciones de interoperabilidad de **WSL2**, choco no puede usarlo directamente y se ve limitado a usar **WSL1**. 
+
+Luego, es posible acceder a la consola de Ubuntu con el comando `ubuntu2004`. Por defecto, esta incluye _bash_, _ssh_, _git_, etc. 
+
+Este primer inicio es más lento que los siguientes, dado que el sistema instalara Ubuntu sobre el kernel, y ademas pedira la creación de un usuario para el sistema. 
+
+```powershell
+> ubuntu2004
+```
+```
+Installing, this may take a few minutes...
+Please create a default UNIX user account. The username does not need to match your Windows username.
+For more information visit: https://aka.ms/wslusers
+Enter new UNIX username: USUARIO
+New password:
+Retype new password:
+passwd: password updated successfully
+Installation successful!
+
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+
+Welcome to Ubuntu 20.04.1 LTS (GNU/Linux 4.4.0-19041-Microsoft x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Tue Nov 10 14:28:55 -03 2020
+```
+
+Para salir de este ambiente Ubuntu, usamos `logout` como en una sesión SSH.
+
+### Otros ambientes Linux para WSL2
+
+- [Debian](https://www.microsoft.com/store/productId/9MSVKQC78PK6)
+- [OpenSUSE](https://www.microsoft.com/store/productId/9MZD0N9Z4M4H)
+- [Alpine](https://www.microsoft.com/en-us/p/alpine-wsl/9p804crf0395?activetab=pivot:overviewtab) - No oficial (aunque toma una imagen oficial)
+
+<!--
+- No está dentro del directorio donde lo convocamos
+- Podemos usar git, wget, curl, varias más. 
+-->
+
+-----
