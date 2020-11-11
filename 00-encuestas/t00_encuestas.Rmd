@@ -1,0 +1,102 @@
+---
+title: "Datos de encuestas"
+author: Alejandro Acevedo-Aracena, _PhD_^[_FONDECYT Postdoctoral Fellow_, Universidad
+  de Chile, deepen.data@gmail.com]; Manuel Muñoz-González^[_Pregrado_, Universidad
+  de Chile]
+date: '2020-11-10'
+output:
+  html_document:
+    theme: flatly
+    highlight: tango
+    toc: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: yes
+    df_print: paged
+    code_folding: show
+  html_notebook: default
+---
+
+# Primera encuesta de caracterización
+
+```{r Paquetes a instalar, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+install.packages('easyalluvial') # Plots
+install.packages('parcats')      # Interactividad
+```
+
+```{r Paquetes a usar, include=FALSE}
+suppressPackageStartupMessages( require(easyalluvial))
+suppressPackageStartupMessages( require(tidyverse))
+suppressPackageStartupMessages( require(ggsci))
+suppressPackageStartupMessages( require(ggplot2))
+```
+
+
+```{r Importando data, echo=FALSE}
+# Definiciones para Knit
+# knitr::opts_chunk$set(echo = FALSE)
+
+# Importación de la data
+URLdata <- "https://docs.google.com/spreadsheets/d/e/2PACX-1vQefDlRlIJsYp1SuXFE1fvjjP5gGL46DFdN2tCcU5b5zRo04rWTdLiA2Wg0L908Z8gIt1joxv55eebd/pub?gid=328728846&single=true&output=csv"
+data <- read.csv(URLdata, header = TRUE, encoding = 'UTF-8')
+data <- dplyr::tibble(data)
+
+# Cambiando el nombre de columnas a algo más decente
+colnames(data) = c("date","usuario","entorno","lab","shell",
+                   "versiones","reproducible", "discord", "comentarios")
+
+data = data %>%  mutate_at( vars(
+  c("usuario","entorno","lab","shell","versiones","reproducible", "discord")),
+  as.factor )
+
+# Reemplazar valores de lab por
+# "unico/a","algunos","varios","lab"
+# Reemplazar Lunuxs por
+# "Linux/Debian","Linux/Otros"
+
+ultimaRespuesta <- as.character(data[length(data),1])   # Fecha D/MM/YYYY hh:mm:ss
+respuestas <- as.numeric(length(data$date)) # Respuestas totales
+
+# Colores para los plots
+colores <- c("#ef476f","#ffd166","#06d6a0","#118ab2") # A mano
+#colores <- RColorBrewer::brewer.pal(n=4, name = "Spectral")
+```
+
+## Sistemas en uso
+
+<!--
+Un grafico [Alluvial](https://www.r-bloggers.com/2018/10/data-exploration-with-alluvial-plots-an-introduction-to-easyalluvial/) hecho segun una guia y el repo de easyalluvial.
+-->
+
+```{r Alluvial, fig.height=10, fig.width=15, fig.cap= "Datos de caracterización", echo=FALSE}
+# knitr::kable( head(subdat) )
+subdat <- data[,2:4] # Subset de caracterizacion
+
+p <- alluvial_wide( data = subdat
+                , max_variables = 3
+                , fill_by = 'first_variable'
+                , colorful_fill_variable_stratum = F
+                , col_vector_value = colores[4:1]
+                , col_vector_flow  = colores[4:1]) + 
+  theme_bw()
+
+plot(p)
+```
+
+## Conocimiento de cosas de software
+
+```{r Alluvial 2, fig.height=10, fig.width=15, fig.cap= "Datos de cosas de software varias", echo=FALSE}
+# knitr::kable( head(subdat) )
+subdat <- data[,5:7] # Subset de caracterizacion
+
+p <- alluvial_wide( data = subdat
+                , max_variables = 3
+                , fill_by = 'first_variable'
+                , colorful_fill_variable_stratum = F
+                , col_vector_value = colores
+                , col_vector_flow  = colores) + 
+  theme_bw()
+
+plot(p)
+```
+
