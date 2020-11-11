@@ -43,7 +43,7 @@ data <- dplyr::tibble(data)
 
 # Cambiando el nombre de columnas a algo más decente
 colnames(data) = c("date","usuario","entorno","lab","shell",
-                   "versiones","reproducible", "discord", "comentarios")
+                   "versiones","reproducible", "discord", "comentarios") # 9 variables
 
 data = data %>%  mutate_at( vars(
   c("usuario","entorno","lab","shell","versiones","reproducible", "discord")),
@@ -71,13 +71,15 @@ Un grafico [Alluvial](https://www.r-bloggers.com/2018/10/data-exploration-with-a
 ```{r Alluvial, fig.height=10, fig.width=15, fig.cap= "Datos de caracterización", echo=FALSE}
 # knitr::kable( head(subdat) )
 subdat <- data[,2:4] # Subset de caracterizacion
+orden  <- c("Laboratorio de bioinformatica","La mayor parte de mis colegas se manejan con bioinformatica (incluido PI)","Algunos de mis colegas saben bioinformatica","Soy el unico/a trabajando en bioinformatica")
 
 p <- alluvial_wide( data = subdat
                 , max_variables = 3
                 , fill_by = 'first_variable'
+                , order_levels = orden
                 , colorful_fill_variable_stratum = F
-                , col_vector_value = colores[4:1]
-                , col_vector_flow  = colores[4:1]) + 
+                , col_vector_value = colores
+                , col_vector_flow  = colores) + 
   theme_bw()
 
 plot(p)
@@ -87,11 +89,13 @@ plot(p)
 
 ```{r Alluvial 2, fig.height=10, fig.width=15, fig.cap= "Datos de cosas de software varias", echo=FALSE}
 # knitr::kable( head(subdat) )
-subdat <- data[,5:7] # Subset de caracterizacion
+subdat <- data[,c(2,7,6,5)] # Subset de caracterizacion
+orden  <- c("Linux basado en Debian (Debian, Ubuntu, etc.)","Mac OS","Windows","Otro Linux (Arch, Fedora, CentOS, etc.)")
 
 p <- alluvial_wide( data = subdat
-                , max_variables = 3
+                , max_variables = 4
                 , fill_by = 'first_variable'
+                , order_levels = orden
                 , colorful_fill_variable_stratum = F
                 , col_vector_value = colores
                 , col_vector_flow  = colores) + 
