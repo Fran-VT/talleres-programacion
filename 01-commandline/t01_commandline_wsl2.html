@@ -3015,7 +3015,22 @@ div.tocify {
 </div>
 
 
-<p>La linea de comandos, tambien llamada interfaz por terminal, es una forma de hablar mas directamente con las computadoras. <!-- Más introducción --></p>
+<div id="terminal-shells-y-niveles-de-abstracción" class="section level1">
+<h1>Terminal, shells, y niveles de abstracción</h1>
+<ul>
+<li><strong>Graphic User Interface</strong> son programas con ventanas y botones, que manejamos en dia a dia.</li>
+<li><strong>Terminal</strong> es la consola de comandos, con la cual interactuamos mediante pulsos de teclado.
+<ul>
+<li><strong>Shell</strong>
+<ul>
+<li><strong>Kernel</strong>
+<ul>
+<li><strong>Host</strong> es la maquina en si, los procesadores que interpretan codigo binario, bits de memoria, etc.</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
 <div id="instalando-lineas-de-comandos-posix-en-windows" class="section level1">
 <h1>Instalando lineas de comandos POSIX en Windows</h1>
 <div id="gestor-de-paquetes-en-windows" class="section level2">
@@ -3031,7 +3046,17 @@ div.tocify {
 <p>Para instalar Chocolatey, se usa la linea de comandos de Powershell de Windows</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">Set-ExecutionPolicy</span> Bypass -Scope <span class="kw">Process</span> -Force;</span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="fu">iex</span> ((<span class="fu">New-Object</span> System.<span class="fu">Net</span>.<span class="fu">WebClient</span>).<span class="fu">DownloadString</span>(&#39;https://chocolatey.<span class="fu">org</span>/install.<span class="fu">ps1</span>&#39;))</span></code></pre></div>
-<p>La instalación dura unos pocos segundos, y luego se puede convocar a Chocolatey con el comando <code>choco</code>.</p>
+<p>La instalación dura unos pocos segundos, y luego se puede convocar a Chocolatey con el comando <code>choco</code>. Una lista de comandos se puede convocar con <code>choco help</code></p>
+<details>
+<p><summary><strong>Más comandos de Chocolatey</strong></summary></p>
+<ul>
+<li><code>choco install &lt;paquete1&gt; &lt;paquete2&gt;</code> permite instalar multiples paquetes en un comando. <code>--yes</code> sirve para omitir las confirmaciones. Por ejemplo <code>choco install 7zip chrome -y</code></li>
+<li><code>choco search &lt;paquete&gt;</code> busca un programa en el repositorio central. Por ejemplo, <code>choco search cytoscape</code></li>
+<li><code>choco list --local</code> lista los paquetes instalados con Chocolatey. <code>choco list</code> lista todos los disponibles en el repositorio central (+1,300)</li>
+<li><code>choco upgrade all</code> actualiza todos los paquetes actualizables. Recomiendo usar <code>--yes</code></li>
+<li><code>choco uninstall &lt;paquete&gt;</code> permite remover cosas</li>
+</ul>
+</details>
 </div>
 <div id="instalando-wsl2-en-windows" class="section level2">
 <h2>Instalando WSL2 en Windows</h2>
@@ -3043,13 +3068,25 @@ div.tocify {
 </ul>
 <p>Para instalar WSL2, lo más facil es usando <code>choco install wsl2 --yes</code> desde la consola en modo administrador.</p>
 <p>Despues de completar la instalación, es necesario reiniciar la computadora para que pueda iniciar el Kernel Linux. Desde la misma consola Powershell con <code>Restart-Computer</code>.</p>
+<details>
+<p><summary><strong>En resumen hasta ahora</strong></summary></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Instalacion de Chocolatey</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">Set-ExecutionPolicy</span> Bypass -Scope <span class="kw">Process</span> -Force;</span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">iex</span> ((<span class="fu">New-Object</span> System.<span class="fu">Net</span>.<span class="fu">WebClient</span>).<span class="fu">DownloadString</span>(&#39;https://chocolatey.<span class="fu">org</span>/install.<span class="fu">ps1</span>&#39;))</span>
+<span id="cb2-4"><a href="#cb2-4"></a></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co"># Instalación de WSL2</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>choco install wsl2 -y</span>
+<span id="cb2-7"><a href="#cb2-7"></a></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="co"># Reboot del sistema</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="fu">Restart-Computer</span></span></code></pre></div>
+</details>
 </div>
 <div id="instalando-ubuntu-como-subsitema-en-windows" class="section level2">
 <h2>Instalando Ubuntu como subsitema en Windows</h2>
 <p>La opción más efectiva es desde la <a href="https://www.microsoft.com/store/productId/9N6SVWS3RX71">Tienda de Windows</a>. Tambien es posible usar Chocolatey, pero por limitaciones de interoperabilidad de <strong>WSL2</strong>, choco no puede usarlo directamente y se ve limitado a usar <strong>WSL1</strong>.</p>
 <p>Luego, es posible acceder a la consola de Ubuntu con el comando <code>ubuntu2004</code>. Por defecto, esta incluye <em>bash</em>, <em>ssh</em>, <em>git</em>, etc.</p>
 <p>Este primer inicio es más lento que los siguientes, dado que el sistema instalara Ubuntu sobre el kernel, y ademas pedira la creación de un usuario para el sistema.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb2-1"><a href="#cb2-1"></a>&gt; ubuntu2004</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb3-1"><a href="#cb3-1"></a>&gt; ubuntu2004</span></code></pre></div>
 <pre><code>Installing, this may take a few minutes...
 Please create a default UNIX user account. The username does not need to match your Windows username.
 For more information visit: https://aka.ms/wslusers
@@ -3070,7 +3107,85 @@ Welcome to Ubuntu 20.04.1 LTS (GNU/Linux 4.4.0-19041-Microsoft x86_64)
 
   System information as of Tue Nov 10 14:28:55 -03 2020</code></pre>
 <p>Para salir de este ambiente Ubuntu, usamos <code>logout</code> como en una sesión SSH.</p>
-<hr />
+<div id="otros-ambientes-linux-para-wsl2" class="section level3">
+<h3>Otros ambientes Linux para WSL2</h3>
+<ul>
+<li><a href="https://www.microsoft.com/store/productId/9MSVKQC78PK6">Debian</a></li>
+<li><a href="https://www.microsoft.com/store/productId/9MZD0N9Z4M4H">OpenSUSE</a></li>
+<li><a href="https://www.microsoft.com/en-us/p/alpine-wsl/9p804crf0395?activetab=pivot:overviewtab">Alpine</a> - No oficial (aunque toma una imagen oficial)</li>
+</ul>
+<p>&lt;! –</p>
+</div>
+</div>
+</div>
+<div id="comandos-básicos" class="section level1">
+<h1>Comandos básicos</h1>
+<p>La mayor parte de estos comandos existen tanto en Linux como en Windows Powershell (aunque en este ultimo realmente son alias). La principal diferencia es como las shells manejan directorios, con <code>/</code> en POSIX y <code>\</code> en Windows; y como manejan comandos multilinea, <code>\</code> y <code>`</code> respectivamente.</p>
+<p>La parte más compleja y menos interoperable es cuando usamos comandos con <code>-parametros</code>.</p>
+<div id="navegación-del-sistema" class="section level2">
+<h2>Navegación del sistema</h2>
+<ul>
+<li><code>cd</code> es <em>Change Directory</em>, mapea <em>Set-Directory</em> en Powershell.
+<ul>
+<li><code>cd /un/path/especifico</code> cambia a un directorio segun un path directo o relativo<br />
+</li>
+<li><code>cd $VAR</code> dirige a un directorio definido por una variable ambiental, como <code>$HOME</code><br />
+</li>
+<li><code>cd ..</code> permite subir al directorio superior, como en <code>/home/directory</code> a <code>/home</code><br />
+</li>
+<li><code>cd -</code> es para volver rapidamente al directorio anterior. Util si cambian rapidamente entre un sub-sub-subdirectorio<br />
+</li>
+<li><strong>Los paths usan <code>\</code> en Windows. <code>/</code> no funciona</strong></li>
+</ul></li>
+<li><code>ls</code> es <em>LiSt</em>, mapeado a <em>Get-ChilItem</em> en Powershell.
+<ul>
+<li><code>ls -a</code> lista todos los objetos en el directorio, incluyendo ocultos</li>
+<li><code>ls -lh</code> genera una lista en formato lista, con permisos, dueños, grupos, tamaño, etc.</li>
+<li><strong>Los parametros no funcionan en Get-ChildItem</strong></li>
+</ul></li>
+<li><code>mkdir</code> es <em>MaKe DIRectory</em>, mapea a <em>New-Item</em> en Powershell.
+<ul>
+<li></li>
+</ul></li>
+<li><code>mklink</code>, no existe un map directo en Powershell.
+<ul>
+<li><strong>Una opción en Windows es desempolvar la vieja CMD.exe, y usar <code>MKLINK</code></strong></li>
+<li><code>MKLINK \D &lt;link&gt; &lt;target&gt;</code> señala un link de <code>\D</code>irectorios.</li>
+</ul></li>
+</ul>
+</div>
+<div id="descargando-archivos" class="section level2">
+<h2>Descargando archivos</h2>
+<ul>
+<li><p><code>curl</code>es <em>C (see) URL</em>, mapeado a <em>Invoke-WebRequest</em> en Powershell.</p></li>
+<li><p><code>wget</code> es <em>Web GET</em>, mapeado a <em>Invoke-WebRequest</em> en Powershell.</p></li>
+</ul>
+</div>
+<div id="explorando-y-renombrando-archivos" class="section level2">
+<h2>Explorando y renombrando archivos</h2>
+<p>TODO: ejemplo de renombrar 110 informes .xsls sin tocar el Word.</p>
+</div>
+<div id="editores" class="section level2">
+<h2>Editores</h2>
+<div id="nano" class="section level3">
+<h3>Nano</h3>
+<p>Este es el editor más familiar, con un modo de edición similar a Notepad, Word, cualquier programa general de texto.</p>
+</div>
+<div id="vi" class="section level3">
+<h3>Vi</h3>
+</div>
+</div>
+<div id="manipulando-computadoras-remotas-via-ssh" class="section level2">
+<h2>Manipulando computadoras remotas via SSH</h2>
+<p><em>Secure SHell</em> es un programa presente en Linux y Windows (activado por defecto en las ultimas versiones), que permite establecer conexion a un host remoto a travez de una linea encriptada.</p>
+<div id="usando-sudo-y-los-riesgos-de-correr-como-root" class="section level3">
+<h3>Usando sudo y los riesgos de correr como root</h3>
+</div>
+<div id="comportamientos-extraños-en-windows" class="section level3">
+<h3>Comportamientos extraños en Windows</h3>
+<p>TODO: como se hace para que añada credenciales al archivo de configuración?</p>
+<p>–&gt;</p>
+</div>
 </div>
 </div>
 <div class="footnotes">

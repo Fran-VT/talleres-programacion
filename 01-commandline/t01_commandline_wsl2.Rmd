@@ -3,9 +3,14 @@
 date: '2020-11-10',
 author: "Alejandro Acevedo-Aracena, _PhD_^[_FONDECYT Postdoctoral Fellow_, Universidad de Chile, deepen.data@gmail.com]; Manuel Muñoz-González^[_Pregrado_, Universidad de Chile]", output: {html_document: {theme: flatly, highlight: tango, toc: true, toc_float: {collapsed: false, smooth_scroll: true}, df_print: paged, code_folding: show}, html_notebook: default}}
 ---
-<!--
-La linea de comandos, tambien llamada interfaz por terminal, es una forma de hablar mas directamente con las computadoras. 
-Más introducción -->
+
+# Terminal, shells, y niveles de abstracción
+
+- **Graphic User Interface** son programas con ventanas y botones, que manejamos en dia a dia. 
+- **Terminal** es la consola de comandos, con la cual interactuamos mediante pulsos de teclado. 
+    - **Shell**
+        - **Kernel**
+            - **Host** es la maquina en si, los procesadores que interpretan codigo binario, bits de memoria, etc. 
 
 # Instalando lineas de comandos POSIX en Windows
 
@@ -29,6 +34,18 @@ iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/in
 ```
 
 La instalación dura unos pocos segundos, y luego se puede convocar a Chocolatey con el comando `choco`. 
+Una lista de comandos se puede convocar con `choco help`
+
+<details>
+<summary>**Más comandos de Chocolatey**</summary>
+
+- `choco install <paquete1> <paquete2>`  permite instalar multiples paquetes en un comando. `--yes` sirve para omitir las confirmaciones. Por ejemplo `choco install 7zip chrome -y`
+- `choco search <paquete>` busca un programa en el repositorio central. Por ejemplo, `choco search cytoscape`
+- `choco list --local` lista los paquetes instalados con Chocolatey. `choco list` lista todos los disponibles en el repositorio central (+1,300)
+- `choco upgrade all` actualiza todos los paquetes actualizables. Recomiendo usar `--yes`
+- `choco uninstall <paquete>` permite remover cosas
+
+</details>
 
 ## Instalando WSL2 en Windows
 
@@ -44,6 +61,22 @@ WSL2 es la segunda versión mayor de este, con compatibilidad y rendimiento mejo
 Para instalar WSL2, lo más facil es usando `choco install wsl2 --yes` desde la consola en modo administrador. 
 
 Despues de completar la instalación, es necesario reiniciar la computadora para que pueda iniciar el Kernel Linux. Desde la misma consola Powershell con `Restart-Computer`. 
+
+<details>
+<summary>**En resumen hasta ahora**</summary>
+```powershell
+# Instalacion de Chocolatey
+Set-ExecutionPolicy Bypass -Scope Process -Force;
+iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
+# Instalación de WSL2
+choco install wsl2 -y
+
+# Reboot del sistema
+Restart-Computer
+```
+</details>
+
 
 ## Instalando Ubuntu como subsitema en Windows
 
@@ -87,9 +120,121 @@ Para salir de este ambiente Ubuntu, usamos `logout` como en una sesión SSH.
 - [OpenSUSE](https://www.microsoft.com/store/productId/9MZD0N9Z4M4H)
 - [Alpine](https://www.microsoft.com/en-us/p/alpine-wsl/9p804crf0395?activetab=pivot:overviewtab) - No oficial (aunque toma una imagen oficial)
 
+<! --
+
+# Comandos básicos
+
+La mayor parte de estos comandos existen tanto en Linux como en Windows Powershell (aunque en este ultimo realmente son alias). 
+La principal diferencia es como las shells manejan directorios, con `/` en POSIX y `\` en Windows; 
+y como manejan comandos multilinea, `\` y `` ` `` respectivamente. 
+
+La parte más compleja y menos interoperable es cuando usamos comandos con `-parametros`.
+
+## Navegación del sistema
+
+- `cd` es _Change Directory_, mapea _Set-Directory_ en Powershell. 
+    - `cd /un/path/especifico` cambia a un directorio segun un path directo o relativo  
+    - `cd $VAR` dirige a un directorio definido por una variable ambiental, como `$HOME`  
+    - `cd ..` permite subir al directorio superior, como en `/home/directory` a `/home`  
+    - `cd -` es para volver rapidamente al directorio anterior. Util si cambian rapidamente entre un sub-sub-subdirectorio  
+    - **Los paths usan `\` en Windows. `/` no funciona**
+    
+- `ls` es _LiSt_, mapeado a _Get-ChilItem_ en Powershell. 
+    - `ls -a` lista todos los objetos en el directorio, incluyendo ocultos
+    - `ls -lh` genera una lista en formato lista, con permisos, dueños, grupos, tamaño, etc.
+    - **Los parametros no funcionan en Get-ChildItem**
+    
+- `mkdir` es _MaKe DIRectory_, mapea a _New-Item_ en Powershell. 
+    - 
+    
+- `mklink`, no existe un map directo en Powershell. 
+    - **Una opción en Windows es desempolvar la vieja CMD.exe, y usar `MKLINK`**
+    - `MKLINK \D <link> <target>` señala un link de `\D`irectorios. 
+
+## Descargando archivos 
+
+- `curl`es _C (see) URL_, mapeado a _Invoke-WebRequest_ en Powershell.
+
+- `wget` es _Web GET_, mapeado a _Invoke-WebRequest_ en Powershell.
+
+## Explorando y renombrando archivos
+
+cat, head, tails para ver las cosas de un archivo
+
+TODO: ejemplo de renombrar 110 informes .xsls sin tocar el Word. 
+
+<!-- AQUI SE ROMPE COMPATIBILIDAD CON WINDOWS NATIVO -->  
+
+### Ejemplo de GREP para archivos
+
+### Ejemplo de CG
+
+<!-- Talla interna cenedyn -->
+
+### Ejemplo de Sed
+
+## Editores
+
+### Nano
+
+Este es el editor más familiar, con un modo de edición similar a Notepad, Word, cualquier programa general de texto.
+
+### Vi
+
+## Manipulando computadoras remotas via SSH
+
+_Secure SHell_ es un programa presente en Linux y Windows 
+(activado por defecto en las ultimas versiones), 
+que permite establecer conexion a un host remoto a travez de una linea encriptada. 
+
 <!--
-- No está dentro del directorio donde lo convocamos
-- Podemos usar git, wget, curl, varias más. 
+- Usar SSH para conectarse a una instancia EC2
+- touch archivoConMiNombre.txt
+- vi o nano para que metan datos dentro de la cosa. 
+
+ubuntu@ip-172-31-37-126:~$ sudo vi /etc/ssh/sshd_config
+ubuntu@ip-172-31-37-126:~$ sudo vi /etc/ssh/sshd_config
+ubuntu@ip-172-31-37-126:~$ sudo service ssh restart
+ubuntu@ip-172-31-37-126:~$ su - demo1
+
 -->
 
------
+```
+ssh demo1@<DIRECCIÓN DE LA MAQUINA>
+touch <NOMBRE>.txt
+```
+
+### Acceso a Leftraru - Servidor de Supercomputo de Beacuhef
+
+[Guia](https://wiki.nlhpc.cl/Tutorial_de_acceso_a_Leftraru_via_SSH)
+
+### Comportamientos extraños en Windows
+
+TODO: como se hace para que añada credenciales al archivo de configuración?
+
+### SACRIFICANDO UNA EC2 para que vean porque root es demasiado poderoso
+
+```bash
+sudo rm -fr ./
+sudo rm -fr  /
+```
+
+# Una cosa más - Instalando git para el proximo taller
+
+## En Windows
+
+`choco install git --yes`
+
+## En Linux
+
+En la mayor parte de las distros ya viene preinstalado. Sino, se puede instalar siguiendo esta [guia]() # TODO: poner link a guia de git. 
+
+
+```bash
+git version # muestra la versión del archivo
+```
+```
+git version 2.29.2.windows.1
+```
+
+-->
