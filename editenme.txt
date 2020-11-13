@@ -1,6 +1,0 @@
-Gasto
-Inutil de
-Tiempo
-PORFAVOR FUNCIONA
-
-Modificando este archivo para hacer un push desde la terminal.
