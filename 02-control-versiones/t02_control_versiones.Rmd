@@ -1,0 +1,132 @@
+---
+{title: "Linea de comandos", subtitle: "POSIX en Windows" ,
+date: '2020-11-10',
+author: "Alejandro Acevedo-Aracena, _PhD_^[_FONDECYT Postdoctoral Fellow_, Universidad de Chile, deepen.data@gmail.com]; Manuel Muñoz-González^[_Pregrado_, Universidad de Chile]", output: {html_document: {theme: flatly, highlight: tango, toc: true, toc_float: {collapsed: false, smooth_scroll: true}, df_print: paged, code_folding: show}, html_notebook: default}}
+---
+
+# Git
+
+_Gran Innovación Tecnologica_ o _Gasto Inutil de Tiempo_, dependiendo de como les funcione. 
+
+TODO: Explicar el modelo de redes de git para la construcción de un historial de versiones. 
+
+## Instalando Git
+
+## En Windows
+
+```powershell
+choco install git --yes
+```
+
+## En Linux
+
+En la mayor parte de las distros ya viene preinstalado. Sino, se puede instalar siguiendo esta [guia](https://git-scm.com/download/linux). 
+
+## Comprobando la instalación
+
+```bash
+git version # muestra la versión
+```
+```
+git version 2.29.2.windows.1
+```
+
+# Creando una cuenta en Github y configurandola al git local
+
+Github es un servicio de hosting de codigo. Ofrece la capacidad de crear repositorios imilitados como OpenSource, crear repositorios en estructuras predefinidas, guardar codigo en una boveda en el Artico, colaborar con más gente, etc. 
+
+Una gran cantidad de codigo OpenSource esta disponible en github. 
+
+Se puede crear una cuenta gratuita, asociada a un correo 
+
+Github acepta varias formas de verificar identidad. La más simple puede ser usar un token de identificación. 
+El token se saca de [Settings/Tokens](https://github.com/settings/tokens).
+
+Deberia ser una cadena como ``Îfb12ab124578ac121223asd1213as1212as12120``
+
+```bash
+$GITHUB_TOKEN = Îfb12ab124578ac121223asd1213as1212as12120
+git config --global url."https://$GITHUB_TOKEN:x-oauth-basic@github.com/".insteadOf "https://github.com/" 
+```
+
+# Usando git
+
+## git init _y_ git clone
+
+Para iniciar un repositorio de git, usamos `git init` dentro de la carpeta del repositorio. 
+
+`git clone <direccion> <carpeta>` permite clonar repositorios, desde un remoto local (aka. otra carpeta) o un remoto disponible en linea. 
+
+Para este taller haremos 
+
+```bash
+git clone <github.tallerdemo.git> taller-git
+```
+
+## git commit
+
+Un commit es un snapshot del estado actual del repositorio. 
+
+## git pull
+
+## git push <remote> <branch>
+
+Al clonar desde un repositorio, como `https:github.git`, se crea automaticamente un remote **origin** con sus branches, como **master**. 
+
+```bash
+git push origin master
+```
+
+En el caso de github, se requiere autorización previa e identificación para poder hacer push a un repo. 
+
+# git config
+
+El archivo de configuración guarda información, preferencias y alias que podemos usar diariamente.
+Es recomendable personalizarlo a nuestra necesidad, para un workflow más eficiente con el programa. 
+
+Para acceder a `-e`ditar el archivo 
+
+```bash
+git config --global -e
+```
+```
+[user]
+        email = <MAIL@MAIL.COM>
+        name = <NOMBRE>
+        username = <USERNAME>
+[url "https://<TOKEN-BASICO>@github.com/"]
+        insteadOf = https://github.com/
+[core]
+        editor = nano
+[alias]
+        a = commit --all
+        m = commit --all -m
+        fk = commit --amend
+        l = log --oneline
+        ls = log --graph --decorate
+        s = status
+        ss = status -s
+        sv = status -v
+        pa = pull --autostash
+        pom = push origin master
+        r = remote
+        ru = remote get-url --all
+        rrm = remote remove
+        ge = config --global -e
+```
+
+Podemos añadir configuraciones desde comandos sin entrar a editar
+
+- `git config --global user.name "NOMBRE APELLIDO"` configura el nombre que firmará git
+- `git config --global user.email "MAIL@MAIL"` configura el mail que firmará git
+
+# Taller - Experimento colaborativo de filogenia
+
+# Inicio rápido
+<!-- Esta sección es para consilta rapida -->
+
+- `git clone https://github.com/DeepenData/clases.git` permite descargar el repo. Solo se hace al inicio.
+- `git remote add clases https://github.com/DeepenData/clases.git` añade el repo de GitHub a la lista de remotes, para de ahi hacer los push. El formato <clases> <url...> indica un remote de nombre y dirección. Por defecto, al hacer clone, se crea un remote **origin** que es de donde clonamos el codigo. 
+-  `git pull --rebase --autostash` para bajar la ultima versión del repo. Util cada clase y cada vez que alguien modifica algo. `--autostash` archiva los cambios locales durante el pull.
+`git commit -m "MENSAJE DEL COMMIT"`  crea un commit con cambios e idelamente un mensaje explicativo. Son snapshots para la historia. 
+- `git push -u <remote> <branch>` empuja esta versión al remoto. En github, requiere autorización previa. 

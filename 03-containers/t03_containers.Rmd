@@ -1,0 +1,25 @@
+---
+{title: "Contenedores y Docker", subtitle: "Formas avanzadas de reproducibilidad y distribución de codigo" ,
+date: '2020-11-10',
+author: "Alejandro Acevedo-Aracena, _PhD_^[_FONDECYT Postdoctoral Fellow_, Universidad de Chile, deepen.data@gmail.com]; Manuel Muñoz-González^[_Pregrado_, Universidad de Chile]", output: {html_document: {theme: flatly, highlight: tango, toc: true, toc_float: {collapsed: false, smooth_scroll: true}, df_print: paged, code_folding: show}, html_notebook: default}}
+---
+
+# Introducción al problema de reproducibilidad
+
+# Instalando Docker 
+
+## En Windows
+
+Usaremos Chocolatey, [previamente instalado](https://rpubs.com/DeepenData/t01_commandline).
+
+`choco install docker-desktop --yes`
+
+## En Linux
+
+```bash
+# un monton de comandos tediosos
+```
+
+
+
+#

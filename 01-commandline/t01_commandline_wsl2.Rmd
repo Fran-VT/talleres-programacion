@@ -1,16 +1,35 @@
 ---
 {title: "Linea de comandos", subtitle: "POSIX en Windows" ,
-date: '2020-11-10',
+date: '2020-11-26',
 author: "Alejandro Acevedo-Aracena, _PhD_^[_FONDECYT Postdoctoral Fellow_, Universidad de Chile, deepen.data@gmail.com]; Manuel Muñoz-González^[_Pregrado_, Universidad de Chile]", output: {html_document: {theme: flatly, highlight: tango, toc: true, toc_float: {collapsed: false, smooth_scroll: true}, df_print: paged, code_folding: show}, html_notebook: default}}
 ---
 
 # Terminal, shells, y niveles de abstracción
 
+Muchos programas de bioinformatica no poseen una interfaz grafica, solo usando la terminal como forma de interacción. 
+
 - **Graphic User Interface** son programas con ventanas y botones, que manejamos en dia a dia. 
-- **Terminal** es la consola de comandos, con la cual interactuamos mediante pulsos de teclado. 
-    - **Shell**
-        - **Kernel**
+- **Terminal** permite interactuar con la computadora mediante comandos del teclado, desde instrucciones a pulsasiones de teclas. 
+    - **Shell** es interprete
+        - **Kernel** es el SO?
             - **Host** es la maquina en si, los procesadores que interpretan codigo binario, bits de memoria, etc. 
+
+**Porque la terminal es cool?**
+
+- Acceso programatico, aka. que scripts y programas pueden acceder a la terminal para hacer trabajo.
+- Ejecutar acciones complejas, como configurar multiples clusters desde un unico `.config`
+- La mayor parte de los programas tiene un CLI pero no necesariamente un GUI, especialmente programas nicho como los usados en Ciencia. 
+    - Hadoop
+    - Slurm
+    - Cosas CERN --posiblemente muchas, Laftraru, etc. 
+    - AWS-CLI
+
+## Terminales más usadas
+
+- [PowerShell]() en Windows
+- [BASH]() _Bourne Again SHell_ en la mayor parte de los sistemas Linux
+- [ZSH]()
+- [FISH]() una shell para 1990'
 
 # Instalando lineas de comandos POSIX en Windows
 
@@ -157,6 +176,13 @@ La parte más compleja y menos interoperable es cuando usamos comandos con `-par
 
 - `wget` es _Web GET_, mapeado a _Invoke-WebRequest_ en Powershell.
 
+## Descomprimiendo archivos
+
+- `untar`, no existe en Windows.
+- `unzip`, no existe en Windows.
+
+- `7zip` tiene linea de comandos para Windows. 
+
 ## Explorando y renombrando archivos
 
 cat, head, tails para ver las cosas de un archivo
@@ -214,6 +240,8 @@ TODO: como se hace para que añada credenciales al archivo de configuración?
 
 ### SACRIFICANDO UNA EC2 para que vean porque root es demasiado poderoso
 
+En casi todo sistema, es mala idea correr comandos como administrador. 
+
 ```bash
 sudo rm -fr ./
 sudo rm -fr  /
@@ -223,15 +251,18 @@ sudo rm -fr  /
 
 ## En Windows
 
-`choco install git --yes`
+```powershell
+choco install git --yes
+```
 
 ## En Linux
 
-En la mayor parte de las distros ya viene preinstalado. Sino, se puede instalar siguiendo esta [guia]() # TODO: poner link a guia de git. 
+En la mayor parte de las distros ya viene preinstalado. Sino, se puede instalar siguiendo esta [guia](https://git-scm.com/download/linux). 
 
+## Comprobando la instalación
 
 ```bash
-git version # muestra la versión del archivo
+git version # muestra la versión
 ```
 ```
 git version 2.29.2.windows.1
