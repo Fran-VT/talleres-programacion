@@ -1,2 +1,3 @@
-" Hola
-Firmen aqui
+Gasto
+Inutil de
+Tiempo
