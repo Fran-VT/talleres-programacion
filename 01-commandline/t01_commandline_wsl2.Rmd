@@ -3,7 +3,7 @@
 date: '2020-11-26',
 author: "Alejandro Acevedo-Aracena, _PhD_^[_FONDECYT Postdoctoral Fellow_, Universidad de Chile, deepen.data@gmail.com]; Manuel Muñoz-González^[_Pregrado_, Universidad de Chile]", output: {html_document: {theme: flatly, highlight: tango, toc: true, toc_float: {collapsed: false, smooth_scroll: true}, df_print: paged, code_folding: show}, html_notebook: default}}
 ---
-
+<!--
 # Terminal, shells, y niveles de abstracción
 
 Muchos programas de bioinformatica no poseen una interfaz grafica, solo usando la terminal como forma de interacción. 
@@ -132,7 +132,7 @@ Para salir de este ambiente Ubuntu, usamos `logout` como en una sesión SSH.
 - [OpenSUSE](https://www.microsoft.com/store/productId/9MZD0N9Z4M4H)
 - [Alpine](https://www.microsoft.com/en-us/p/alpine-wsl/9p804crf0395?activetab=pivot:overviewtab) - No oficial (aunque toma una imagen oficial)
 
-<! --
+<!--
 
 # Comandos básicos
 
@@ -168,13 +168,13 @@ La parte más compleja y menos interoperable es cuando usamos comandos con `-par
     - `MKLINK \D <link> <target>` señala un link de `\D`irectorios
 
 ## Descargando archivos 
-
+<!-- TODO: @alejandro Crear un script de R que toma 3 datasets y hace una reducción dimensional ->
 - `curl` es _C (see) URL_, mapeado a _Invoke-WebRequest_ en Powershell.
     - `curl <url> -o <archivo>` descarga una URL para guardarla en un archivo
     - `curl -O <url>` descarga la URL a un archvio con su nombre. Usualmente usamos esto
 
 - `wget` es _Web GET_, mapeado a _Invoke-WebRequest_ en Powershell. Es el más facil de usar. 
-    - `wget <url>` descarga la URL a un archvio con su nombre
+    - `wget <url> <url2…>` descarga la URL a un archvio con su nombre
     - `wget -c <url>` permite continuar una descarga interrumpida
 
 - `Invoke-WebRequest` requiere un output explicito. 
@@ -220,25 +220,31 @@ La parte más compleja y menos interoperable es cuando usamos comandos con `-par
     - `tail -n <archivo>` muestra las _n_ ultimas lineas de _archivo_
     - En Windows, `Get-Content <archivo> -Tail 10` tiene el mismo comportamiento
 
-<!-- AQUI SE ROMPE COMPATIBILIDAD CON WINDOWS NATIVO -->  
+<!-- AQUI SE ROMPE COMPATIBILIDAD CON WINDOWS NATIVO ->  
 
 ### Ejemplo de GREP para archivos
 
-<!-- TODO: ejemplo de renombrar 110 informes .xsls sin tocar el Word. -->
+<!-- TODO: ejemplo de renombrar 110 informes .xsls sin tocar el Word. ->
 
 ### Ejemplo de CG
 
-<!-- Talla interna cenedyn -->
+<!-- Talla interna cenedyn ->
+
+### Ejemplo de For Each
 
 ### Ejemplo de Sed
 
+<!-- TODO: ejemplo en SED con la cosa nefasta de ~GERO~ GERArdo ->
+
 ## Editores
-<!-- TODO: terminar los ejemplos de los editores -->
+<!-- TODO: terminar los ejemplos de los editores ->
 ### Nano
 
 Este es el editor más familiar, con un modo de edición similar a Notepad, Word, cualquier programa general de texto.
 
 ### Vi
+
+Vi es cool si tienen que escribir codigo, y tiene un _paradigma_. 
 
 ## Manipulando computadoras remotas via SSH
 
@@ -256,12 +262,16 @@ ubuntu@ip-172-31-37-126:~$ sudo vi /etc/ssh/sshd_config
 ubuntu@ip-172-31-37-126:~$ sudo service ssh restart
 ubuntu@ip-172-31-37-126:~$ su - demo1
 
--->
+->
 
 ```
 ssh demo@<DIRECCIÓN DE LA MAQUINA>
 touch <NOMBRE>.txt
 ```
+
+### Copiando archivos entre remotos y locales con SCP
+
+_Secure CoPy_ 
 
 ### Acceso a Leftraru - Servidor de Supercomputo de Beacuhef
 
