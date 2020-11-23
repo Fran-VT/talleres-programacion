@@ -10,8 +10,8 @@ Muchos programas de bioinformatica no poseen una interfaz grafica, solo usando l
 
 - **Graphic User Interface** son programas con ventanas y botones, que manejamos en dia a dia. 
 - **Terminal** permite interactuar con la computadora mediante comandos del teclado, desde instrucciones a pulsasiones de teclas. 
-    - **Shell** es interprete
-        - **Kernel** es el SO?
+    - **Shell** es 
+        - **Kernel** es el 
             - **Host** es la maquina en si, los procesadores que interpretan codigo binario, bits de memoria, etc. 
 
 **Porque la terminal es cool?**
@@ -30,6 +30,8 @@ Muchos programas de bioinformatica no poseen una interfaz grafica, solo usando l
 - [BASH]() _Bourne Again SHell_ en la mayor parte de los sistemas Linux
 - [ZSH]()
 - [FISH]() una shell para 1990'
+
+<!-- TODO: completar shells -->
 
 # Instalando lineas de comandos POSIX en Windows
 
@@ -77,25 +79,16 @@ WSL2 es la segunda versión mayor de este, con compatibilidad y rendimiento mejo
 
 - Requiere Windows posterior a 1903, ie. la versión de Marzo 2019
 
-Para instalar WSL2, lo más facil es usando `choco install wsl2 --yes` desde la consola en modo administrador. 
+Para instalar WSL2, lo más facil es usando Chocolatey desde la consola en modo administrador (como la que usamos para instalarlo). 
+Despues de completar la instalación, es necesario reiniciar la computadora para que pueda iniciar el Kernel Linux. 
 
-Despues de completar la instalación, es necesario reiniciar la computadora para que pueda iniciar el Kernel Linux. Desde la misma consola Powershell con `Restart-Computer`. 
-
-<details>
-<summary>**En resumen hasta ahora**</summary>
 ```powershell
-# Instalacion de Chocolatey
-Set-ExecutionPolicy Bypass -Scope Process -Force;
-iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-
 # Instalación de WSL2
 choco install wsl2 -y
 
 # Reboot del sistema
 Restart-Computer
 ```
-</details>
-
 
 ## Instalando Ubuntu como subsitema en Windows
 
@@ -107,7 +100,7 @@ Luego, es posible acceder a la consola de Ubuntu con el comando `ubuntu2004`. Po
 Este primer inicio es más lento que los siguientes, dado que el sistema instalara Ubuntu sobre el kernel, y ademas pedira la creación de un usuario para el sistema. 
 
 ```powershell
-> ubuntu2004
+ubuntu2004
 ```
 ```
 Installing, this may take a few minutes...
@@ -161,37 +154,77 @@ La parte más compleja y menos interoperable es cuando usamos comandos con `-par
 - `ls` es _LiSt_, mapeado a _Get-ChilItem_ en Powershell. 
     - `ls -a` lista todos los objetos en el directorio, incluyendo ocultos
     - `ls -lh` genera una lista en formato lista, con permisos, dueños, grupos, tamaño, etc.
+    - `ls -r1 | sort | uniq -c | sort -nr` permite listar rapidamente archivos duplicados (por nombre) en un directorio y subdirectorios
     - **Los parametros no funcionan en Get-ChildItem**
     
 - `mkdir` es _MaKe DIRectory_, mapea a _New-Item_ en Powershell. 
-    - 
+    - En *nix podemos crear multiples directorios y subdirectorios como ``mkdir Directorio/{Sub1, Sub2, Sub3}``
+    - En Powershell necesitamos una sintaxis explicita; ie. ``mkdir Directorio\Sub1, Directorio\Sub2, ...``
     
-- `mklink`, no existe un map directo en Powershell. 
+- `ln`,es _LiNk_, no existe un map directo en Powershell. 
+    - `ln -s <target> <link>` permite crear un vinculo `-s`imbolico
+    - `ln -sf <target> <link>` permite actualizar el vinculo simbolico
     - **Una opción en Windows es desempolvar la vieja CMD.exe, y usar `MKLINK`**
-    - `MKLINK \D <link> <target>` señala un link de `\D`irectorios. 
+    - `MKLINK \D <link> <target>` señala un link de `\D`irectorios
 
 ## Descargando archivos 
 
-- `curl`es _C (see) URL_, mapeado a _Invoke-WebRequest_ en Powershell.
+- `curl` es _C (see) URL_, mapeado a _Invoke-WebRequest_ en Powershell.
+    - `curl <url> -o <archivo>` descarga una URL para guardarla en un archivo
+    - `curl -O <url>` descarga la URL a un archvio con su nombre. Usualmente usamos esto
 
-- `wget` es _Web GET_, mapeado a _Invoke-WebRequest_ en Powershell.
+- `wget` es _Web GET_, mapeado a _Invoke-WebRequest_ en Powershell. Es el más facil de usar. 
+    - `wget <url>` descarga la URL a un archvio con su nombre
+    - `wget -c <url>` permite continuar una descarga interrumpida
+
+- `Invoke-WebRequest` requiere un output explicito. 
+    - `Invoke-WebRequest <url> -OutFile <archivo>`
+    - `Invoke-WebRequest <url> -Method Get -o <archivo>` funciona igual que Wget
+    - `wget <url> -o <archivo>` es valido en Windows base
 
 ## Descomprimiendo archivos
 
-- `untar`, no existe en Windows.
-- `unzip`, no existe en Windows.
+- `tar`, no existe en Windows.
+    - `… xf …` son parametros para _eXtract_ y _File_
+    - `tar xf <tar.gz.bz2.xz>` desempaca un tar (comprimido) al directorio local
+    - `tar xf <tar.gz.bz2.xz> -C <directorio>` desempaca el tar a un directorio especifico
+    - Los tar por defecto no están comprimidos. Un tar.gz si lo está. 
+    - `tar cf <nuevo.tar> <archivo1 directorio/*>` crea un archivo tar.
+    - `tar cgf <nuevo.tar.gz> <archivo1 directorio/*>` crea un archivo tar comprimido.
 
-- `7zip` tiene linea de comandos para Windows. 
+- `unzip`, no existe en Windows.
+    - `unzip <zip>` extrae los contenidos de un zip en el directorio actual
+    - `unzip <zip> -d <directorio>` extrae el zip a una carpeta especifica 
+    - `zip -r <nuevo.zip> <directorio>` comprime un directorio a un zip. 
+
+- `Expand-Archive` es una utilidad de Windows que funciona como `unzip`
+    - `Expand-Archive <zip> <directorio>` descomprime un zip en un directorio existente o nuevo
+    - `Compress-Archive -Path <directorio\*> -DestinationPath <nuevo.zip>` crea un zip con los contenidos de _directorio_
+
+- `7zip` tiene linea de comandos para Linux, Mac, Windows. 
 
 ## Explorando y renombrando archivos
 
-cat, head, tails para ver las cosas de un archivo
+- `cat` es _conCATenate_, mapeado a _Get-Content_ en Powershell.
+    - `cat <archivo>` pasa los contenidos de _archivo_ a la terminal, mostrandolos
+    - `cat <archivo1> <archivo2> > <nuevo>` reemplaza los contenidos de _nuevo_ por la concatenación de _archivo1_ y _archivo2_
+    - `cat <achivo3> >> <nuevo>` concatena _archivo3_ a _nuevo_
 
-TODO: ejemplo de renombrar 110 informes .xsls sin tocar el Word. 
+- `head`, no existe en Windows.
+    - `head <archivo>` muestra las 10 primeras lineas de _archivo_
+    - `head -n <archivo>` muestra las _n_ primeras lineas de _archivo_
+    - En Windows, `Get-Content <archivo> -TotalCount 10` tiene el mismo comportamiento
+
+- `tail`, no existe en Windows.
+    - `tail <archivo>` muestra las 10 ultimas lineas de _archivo_
+    - `tail -n <archivo>` muestra las _n_ ultimas lineas de _archivo_
+    - En Windows, `Get-Content <archivo> -Tail 10` tiene el mismo comportamiento
 
 <!-- AQUI SE ROMPE COMPATIBILIDAD CON WINDOWS NATIVO -->  
 
 ### Ejemplo de GREP para archivos
+
+<!-- TODO: ejemplo de renombrar 110 informes .xsls sin tocar el Word. -->
 
 ### Ejemplo de CG
 
@@ -200,7 +233,7 @@ TODO: ejemplo de renombrar 110 informes .xsls sin tocar el Word.
 ### Ejemplo de Sed
 
 ## Editores
-
+<!-- TODO: terminar los ejemplos de los editores -->
 ### Nano
 
 Este es el editor más familiar, con un modo de edición similar a Notepad, Word, cualquier programa general de texto.
@@ -226,7 +259,7 @@ ubuntu@ip-172-31-37-126:~$ su - demo1
 -->
 
 ```
-ssh demo1@<DIRECCIÓN DE LA MAQUINA>
+ssh demo@<DIRECCIÓN DE LA MAQUINA>
 touch <NOMBRE>.txt
 ```
 
@@ -247,19 +280,31 @@ sudo rm -fr ./
 sudo rm -fr  /
 ```
 
-# Una cosa más - Instalando git para el proximo taller
+# Extras! - Cosas utiles y git para el proximo taller
 
-## En Windows
+- [Windows Terminal](https://github.com/microsoft/terminal) es la nueva terminal de Windows, con soporte para pestañas, multiples ambientes, mejores visuales, etc. 
+    - [Instalar desde la Tienda](https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701)
+    - [Documentación](https://docs.microsoft.com/en-us/windows/terminal/) con ejemplos
+    - `choco install microsoft-windows-terminal -y` instala la nueva terminal
+- [TLDR](https://github.com/tldr-pages/tldr), _Too Long; Didn't Read_ es una colección de manuales y paginas de ayuda resumidas para varias utilidades de terminal.
+    - [TLDR.ostera.io](https://tldr.ostera.io) tiene una versión accesible via web
+    - `tldr apt-get` muestra un ejemplo y caso de uso de `apt-get`
+    - `apt-get install tldr` instala TLDR
+
+## Instalando git
+
+### En Windows
 
 ```powershell
 choco install git --yes
 ```
 
-## En Linux
+### En Linux
 
-En la mayor parte de las distros ya viene preinstalado. Sino, se puede instalar siguiendo esta [guia](https://git-scm.com/download/linux). 
+En la mayor parte de las distros ya viene preinstalado. 
+Sino, se puede instalar siguiendo esta [guia](https://git-scm.com/download/linux). 
 
-## Comprobando la instalación
+### Comprobando la instalación
 
 ```bash
 git version # muestra la versión
