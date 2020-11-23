@@ -11,7 +11,7 @@
 
 <meta name="author" content="Alejandro Acevedo-Aracena, PhD; Manuel Muñoz-González" />
 
-<meta name="date" content="2020-11-10" />
+<meta name="date" content="2020-11-26" />
 
 <title>Linea de comandos</title>
 
@@ -3010,27 +3010,40 @@ div.tocify {
 <h1 class="title toc-ignore">Linea de comandos</h1>
 <h3 class="subtitle">POSIX en Windows</h3>
 <h4 class="author">Alejandro Acevedo-Aracena, <em>PhD</em><a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>; Manuel Muñoz-González<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></h4>
-<h4 class="date">2020-11-10</h4>
+<h4 class="date">2020-11-26</h4>
 
 </div>
 
 
-<div id="terminal-shells-y-niveles-de-abstracción" class="section level1">
-<h1>Terminal, shells, y niveles de abstracción</h1>
-<ul>
-<li><strong>Graphic User Interface</strong> son programas con ventanas y botones, que manejamos en dia a dia.</li>
-<li><strong>Terminal</strong> es la consola de comandos, con la cual interactuamos mediante pulsos de teclado.
-<ul>
-<li><strong>Shell</strong>
-<ul>
-<li><strong>Kernel</strong>
-<ul>
-<li><strong>Host</strong> es la maquina en si, los procesadores que interpretan codigo binario, bits de memoria, etc.</li>
-</ul></li>
-</ul></li>
-</ul></li>
-</ul>
-</div>
+<!--
+# Terminal, shells, y niveles de abstracción
+
+Muchos programas de bioinformatica no poseen una interfaz grafica, solo usando la terminal como forma de interacción. 
+
+- **Graphic User Interface** son programas con ventanas y botones, que manejamos en dia a dia. 
+- **Terminal** permite interactuar con la computadora mediante comandos del teclado, desde instrucciones a pulsasiones de teclas. 
+    - **Shell** es 
+        - **Kernel** es el 
+            - **Host** es la maquina en si, los procesadores que interpretan codigo binario, bits de memoria, etc. 
+
+**Porque la terminal es cool?**
+
+- Acceso programatico, aka. que scripts y programas pueden acceder a la terminal para hacer trabajo.
+- Ejecutar acciones complejas, como configurar multiples clusters desde un unico `.config`
+- La mayor parte de los programas tiene un CLI pero no necesariamente un GUI, especialmente programas nicho como los usados en Ciencia. 
+    - Hadoop
+    - Slurm
+    - Cosas CERN --posiblemente muchas, Laftraru, etc. 
+    - AWS-CLI
+
+## Terminales más usadas
+
+- [PowerShell]() en Windows
+- [BASH]() _Bourne Again SHell_ en la mayor parte de los sistemas Linux
+- [ZSH]()
+- [FISH]() una shell para 1990'
+
+<!-- TODO: completar shells -->
 <div id="instalando-lineas-de-comandos-posix-en-windows" class="section level1">
 <h1>Instalando lineas de comandos POSIX en Windows</h1>
 <div id="gestor-de-paquetes-en-windows" class="section level2">
@@ -3066,27 +3079,19 @@ div.tocify {
 <ul>
 <li>Requiere Windows posterior a 1903, ie. la versión de Marzo 2019</li>
 </ul>
-<p>Para instalar WSL2, lo más facil es usando <code>choco install wsl2 --yes</code> desde la consola en modo administrador.</p>
-<p>Despues de completar la instalación, es necesario reiniciar la computadora para que pueda iniciar el Kernel Linux. Desde la misma consola Powershell con <code>Restart-Computer</code>.</p>
-<details>
-<p><summary><strong>En resumen hasta ahora</strong></summary></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Instalacion de Chocolatey</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">Set-ExecutionPolicy</span> Bypass -Scope <span class="kw">Process</span> -Force;</span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">iex</span> ((<span class="fu">New-Object</span> System.<span class="fu">Net</span>.<span class="fu">WebClient</span>).<span class="fu">DownloadString</span>(&#39;https://chocolatey.<span class="fu">org</span>/install.<span class="fu">ps1</span>&#39;))</span>
-<span id="cb2-4"><a href="#cb2-4"></a></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="co"># Instalación de WSL2</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a>choco install wsl2 -y</span>
-<span id="cb2-7"><a href="#cb2-7"></a></span>
-<span id="cb2-8"><a href="#cb2-8"></a><span class="co"># Reboot del sistema</span></span>
-<span id="cb2-9"><a href="#cb2-9"></a><span class="fu">Restart-Computer</span></span></code></pre></div>
-</details>
+<p>Para instalar WSL2, lo más facil es usando Chocolatey desde la consola en modo administrador (como la que usamos para instalarlo). Despues de completar la instalación, es necesario reiniciar la computadora para que pueda iniciar el Kernel Linux.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Instalación de WSL2</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>choco install wsl2 -y</span>
+<span id="cb2-3"><a href="#cb2-3"></a></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co"># Reboot del sistema</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="fu">Restart-Computer</span></span></code></pre></div>
 </div>
 <div id="instalando-ubuntu-como-subsitema-en-windows" class="section level2">
 <h2>Instalando Ubuntu como subsitema en Windows</h2>
 <p>La opción más efectiva es desde la <a href="https://www.microsoft.com/store/productId/9N6SVWS3RX71">Tienda de Windows</a>. Tambien es posible usar Chocolatey, pero por limitaciones de interoperabilidad de <strong>WSL2</strong>, choco no puede usarlo directamente y se ve limitado a usar <strong>WSL1</strong>.</p>
 <p>Luego, es posible acceder a la consola de Ubuntu con el comando <code>ubuntu2004</code>. Por defecto, esta incluye <em>bash</em>, <em>ssh</em>, <em>git</em>, etc.</p>
 <p>Este primer inicio es más lento que los siguientes, dado que el sistema instalara Ubuntu sobre el kernel, y ademas pedira la creación de un usuario para el sistema.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb3-1"><a href="#cb3-1"></a>&gt; ubuntu2004</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb3-1"><a href="#cb3-1"></a>ubuntu2004</span></code></pre></div>
 <pre><code>Installing, this may take a few minutes...
 Please create a default UNIX user account. The username does not need to match your Windows username.
 For more information visit: https://aka.ms/wslusers
@@ -3114,77 +3119,198 @@ Welcome to Ubuntu 20.04.1 LTS (GNU/Linux 4.4.0-19041-Microsoft x86_64)
 <li><a href="https://www.microsoft.com/store/productId/9MZD0N9Z4M4H">OpenSUSE</a></li>
 <li><a href="https://www.microsoft.com/en-us/p/alpine-wsl/9p804crf0395?activetab=pivot:overviewtab">Alpine</a> - No oficial (aunque toma una imagen oficial)</li>
 </ul>
-<p>&lt;! –</p>
-</div>
-</div>
-</div>
-<div id="comandos-básicos" class="section level1">
-<h1>Comandos básicos</h1>
-<p>La mayor parte de estos comandos existen tanto en Linux como en Windows Powershell (aunque en este ultimo realmente son alias). La principal diferencia es como las shells manejan directorios, con <code>/</code> en POSIX y <code>\</code> en Windows; y como manejan comandos multilinea, <code>\</code> y <code>`</code> respectivamente.</p>
-<p>La parte más compleja y menos interoperable es cuando usamos comandos con <code>-parametros</code>.</p>
-<div id="navegación-del-sistema" class="section level2">
-<h2>Navegación del sistema</h2>
-<ul>
-<li><code>cd</code> es <em>Change Directory</em>, mapea <em>Set-Directory</em> en Powershell.
-<ul>
-<li><code>cd /un/path/especifico</code> cambia a un directorio segun un path directo o relativo<br />
-</li>
-<li><code>cd $VAR</code> dirige a un directorio definido por una variable ambiental, como <code>$HOME</code><br />
-</li>
-<li><code>cd ..</code> permite subir al directorio superior, como en <code>/home/directory</code> a <code>/home</code><br />
-</li>
-<li><code>cd -</code> es para volver rapidamente al directorio anterior. Util si cambian rapidamente entre un sub-sub-subdirectorio<br />
-</li>
-<li><strong>Los paths usan <code>\</code> en Windows. <code>/</code> no funciona</strong></li>
-</ul></li>
-<li><code>ls</code> es <em>LiSt</em>, mapeado a <em>Get-ChilItem</em> en Powershell.
-<ul>
-<li><code>ls -a</code> lista todos los objetos en el directorio, incluyendo ocultos</li>
-<li><code>ls -lh</code> genera una lista en formato lista, con permisos, dueños, grupos, tamaño, etc.</li>
-<li><strong>Los parametros no funcionan en Get-ChildItem</strong></li>
-</ul></li>
-<li><code>mkdir</code> es <em>MaKe DIRectory</em>, mapea a <em>New-Item</em> en Powershell.
-<ul>
-<li></li>
-</ul></li>
-<li><code>mklink</code>, no existe un map directo en Powershell.
-<ul>
-<li><strong>Una opción en Windows es desempolvar la vieja CMD.exe, y usar <code>MKLINK</code></strong></li>
-<li><code>MKLINK \D &lt;link&gt; &lt;target&gt;</code> señala un link de <code>\D</code>irectorios.</li>
-</ul></li>
-</ul>
-</div>
-<div id="descargando-archivos" class="section level2">
-<h2>Descargando archivos</h2>
-<ul>
-<li><p><code>curl</code>es <em>C (see) URL</em>, mapeado a <em>Invoke-WebRequest</em> en Powershell.</p></li>
-<li><p><code>wget</code> es <em>Web GET</em>, mapeado a <em>Invoke-WebRequest</em> en Powershell.</p></li>
-</ul>
-</div>
-<div id="explorando-y-renombrando-archivos" class="section level2">
-<h2>Explorando y renombrando archivos</h2>
-<p>TODO: ejemplo de renombrar 110 informes .xsls sin tocar el Word.</p>
-</div>
-<div id="editores" class="section level2">
-<h2>Editores</h2>
-<div id="nano" class="section level3">
-<h3>Nano</h3>
-<p>Este es el editor más familiar, con un modo de edición similar a Notepad, Word, cualquier programa general de texto.</p>
-</div>
-<div id="vi" class="section level3">
-<h3>Vi</h3>
-</div>
-</div>
-<div id="manipulando-computadoras-remotas-via-ssh" class="section level2">
-<h2>Manipulando computadoras remotas via SSH</h2>
-<p><em>Secure SHell</em> es un programa presente en Linux y Windows (activado por defecto en las ultimas versiones), que permite establecer conexion a un host remoto a travez de una linea encriptada.</p>
-<div id="usando-sudo-y-los-riesgos-de-correr-como-root" class="section level3">
-<h3>Usando sudo y los riesgos de correr como root</h3>
-</div>
-<div id="comportamientos-extraños-en-windows" class="section level3">
-<h3>Comportamientos extraños en Windows</h3>
-<p>TODO: como se hace para que añada credenciales al archivo de configuración?</p>
-<p>–&gt;</p>
+<!--
+
+# Comandos básicos
+
+La mayor parte de estos comandos existen tanto en Linux como en Windows Powershell (aunque en este ultimo realmente son alias). 
+La principal diferencia es como las shells manejan directorios, con `/` en POSIX y `\` en Windows; 
+y como manejan comandos multilinea, `\` y `` ` `` respectivamente. 
+
+La parte más compleja y menos interoperable es cuando usamos comandos con `-parametros`.
+
+## Navegación del sistema
+
+- `cd` es _Change Directory_, mapea _Set-Directory_ en Powershell. 
+    - `cd /un/path/especifico` cambia a un directorio segun un path directo o relativo  
+    - `cd $VAR` dirige a un directorio definido por una variable ambiental, como `$HOME`  
+    - `cd ..` permite subir al directorio superior, como en `/home/directory` a `/home`  
+    - `cd -` es para volver rapidamente al directorio anterior. Util si cambian rapidamente entre un sub-sub-subdirectorio  
+    - **Los paths usan `\` en Windows. `/` no funciona**
+    
+- `ls` es _LiSt_, mapeado a _Get-ChilItem_ en Powershell. 
+    - `ls -a` lista todos los objetos en el directorio, incluyendo ocultos
+    - `ls -lh` genera una lista en formato lista, con permisos, dueños, grupos, tamaño, etc.
+    - `ls -r1 | sort | uniq -c | sort -nr` permite listar rapidamente archivos duplicados (por nombre) en un directorio y subdirectorios
+    - **Los parametros no funcionan en Get-ChildItem**
+    
+- `mkdir` es _MaKe DIRectory_, mapea a _New-Item_ en Powershell. 
+    - En *nix podemos crear multiples directorios y subdirectorios como ``mkdir Directorio/{Sub1, Sub2, Sub3}``
+    - En Powershell necesitamos una sintaxis explicita; ie. ``mkdir Directorio\Sub1, Directorio\Sub2, ...``
+    
+- `ln`,es _LiNk_, no existe un map directo en Powershell. 
+    - `ln -s <target> <link>` permite crear un vinculo `-s`imbolico
+    - `ln -sf <target> <link>` permite actualizar el vinculo simbolico
+    - **Una opción en Windows es desempolvar la vieja CMD.exe, y usar `MKLINK`**
+    - `MKLINK \D <link> <target>` señala un link de `\D`irectorios
+
+## Descargando archivos 
+<!-- TODO: @alejandro Crear un script de R que toma 3 datasets y hace una reducción dimensional ->
+- `curl` es _C (see) URL_, mapeado a _Invoke-WebRequest_ en Powershell.
+    - `curl <url> -o <archivo>` descarga una URL para guardarla en un archivo
+    - `curl -O <url>` descarga la URL a un archvio con su nombre. Usualmente usamos esto
+
+- `wget` es _Web GET_, mapeado a _Invoke-WebRequest_ en Powershell. Es el más facil de usar. 
+    - `wget <url> <url2…>` descarga la URL a un archvio con su nombre
+    - `wget -c <url>` permite continuar una descarga interrumpida
+
+- `Invoke-WebRequest` requiere un output explicito. 
+    - `Invoke-WebRequest <url> -OutFile <archivo>`
+    - `Invoke-WebRequest <url> -Method Get -o <archivo>` funciona igual que Wget
+    - `wget <url> -o <archivo>` es valido en Windows base
+
+## Descomprimiendo archivos
+
+- `tar`, no existe en Windows.
+    - `… xf …` son parametros para _eXtract_ y _File_
+    - `tar xf <tar.gz.bz2.xz>` desempaca un tar (comprimido) al directorio local
+    - `tar xf <tar.gz.bz2.xz> -C <directorio>` desempaca el tar a un directorio especifico
+    - Los tar por defecto no están comprimidos. Un tar.gz si lo está. 
+    - `tar cf <nuevo.tar> <archivo1 directorio/*>` crea un archivo tar.
+    - `tar cgf <nuevo.tar.gz> <archivo1 directorio/*>` crea un archivo tar comprimido.
+
+- `unzip`, no existe en Windows.
+    - `unzip <zip>` extrae los contenidos de un zip en el directorio actual
+    - `unzip <zip> -d <directorio>` extrae el zip a una carpeta especifica 
+    - `zip -r <nuevo.zip> <directorio>` comprime un directorio a un zip. 
+
+- `Expand-Archive` es una utilidad de Windows que funciona como `unzip`
+    - `Expand-Archive <zip> <directorio>` descomprime un zip en un directorio existente o nuevo
+    - `Compress-Archive -Path <directorio\*> -DestinationPath <nuevo.zip>` crea un zip con los contenidos de _directorio_
+
+- `7zip` tiene linea de comandos para Linux, Mac, Windows. 
+
+## Explorando y renombrando archivos
+
+- `cat` es _conCATenate_, mapeado a _Get-Content_ en Powershell.
+    - `cat <archivo>` pasa los contenidos de _archivo_ a la terminal, mostrandolos
+    - `cat <archivo1> <archivo2> > <nuevo>` reemplaza los contenidos de _nuevo_ por la concatenación de _archivo1_ y _archivo2_
+    - `cat <achivo3> >> <nuevo>` concatena _archivo3_ a _nuevo_
+
+- `head`, no existe en Windows.
+    - `head <archivo>` muestra las 10 primeras lineas de _archivo_
+    - `head -n <archivo>` muestra las _n_ primeras lineas de _archivo_
+    - En Windows, `Get-Content <archivo> -TotalCount 10` tiene el mismo comportamiento
+
+- `tail`, no existe en Windows.
+    - `tail <archivo>` muestra las 10 ultimas lineas de _archivo_
+    - `tail -n <archivo>` muestra las _n_ ultimas lineas de _archivo_
+    - En Windows, `Get-Content <archivo> -Tail 10` tiene el mismo comportamiento
+
+<!-- AQUI SE ROMPE COMPATIBILIDAD CON WINDOWS NATIVO ->  
+
+### Ejemplo de GREP para archivos
+
+<!-- TODO: ejemplo de renombrar 110 informes .xsls sin tocar el Word. ->
+
+### Ejemplo de CG
+
+<!-- Talla interna cenedyn ->
+
+### Ejemplo de For Each
+
+### Ejemplo de Sed
+
+<!-- TODO: ejemplo en SED con la cosa nefasta de ~GERO~ GERArdo ->
+
+## Editores
+<!-- TODO: terminar los ejemplos de los editores ->
+### Nano
+
+Este es el editor más familiar, con un modo de edición similar a Notepad, Word, cualquier programa general de texto.
+
+### Vi
+
+Vi es cool si tienen que escribir codigo, y tiene un _paradigma_. 
+
+## Manipulando computadoras remotas via SSH
+
+_Secure SHell_ es un programa presente en Linux y Windows 
+(activado por defecto en las ultimas versiones), 
+que permite establecer conexion a un host remoto a travez de una linea encriptada. 
+
+<!--
+- Usar SSH para conectarse a una instancia EC2
+- touch archivoConMiNombre.txt
+- vi o nano para que metan datos dentro de la cosa. 
+
+ubuntu@ip-172-31-37-126:~$ sudo vi /etc/ssh/sshd_config
+ubuntu@ip-172-31-37-126:~$ sudo vi /etc/ssh/sshd_config
+ubuntu@ip-172-31-37-126:~$ sudo service ssh restart
+ubuntu@ip-172-31-37-126:~$ su - demo1
+
+->
+
+```
+ssh demo@<DIRECCIÓN DE LA MAQUINA>
+touch <NOMBRE>.txt
+```
+
+### Copiando archivos entre remotos y locales con SCP
+
+_Secure CoPy_ 
+
+### Acceso a Leftraru - Servidor de Supercomputo de Beacuhef
+
+[Guia](https://wiki.nlhpc.cl/Tutorial_de_acceso_a_Leftraru_via_SSH)
+
+### Comportamientos extraños en Windows
+
+TODO: como se hace para que añada credenciales al archivo de configuración?
+
+### SACRIFICANDO UNA EC2 para que vean porque root es demasiado poderoso
+
+En casi todo sistema, es mala idea correr comandos como administrador. 
+
+```bash
+sudo rm -fr ./
+sudo rm -fr  /
+```
+
+# Extras! - Cosas utiles y git para el proximo taller
+
+- [Windows Terminal](https://github.com/microsoft/terminal) es la nueva terminal de Windows, con soporte para pestañas, multiples ambientes, mejores visuales, etc. 
+    - [Instalar desde la Tienda](https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701)
+    - [Documentación](https://docs.microsoft.com/en-us/windows/terminal/) con ejemplos
+    - `choco install microsoft-windows-terminal -y` instala la nueva terminal
+- [TLDR](https://github.com/tldr-pages/tldr), _Too Long; Didn't Read_ es una colección de manuales y paginas de ayuda resumidas para varias utilidades de terminal.
+    - [TLDR.ostera.io](https://tldr.ostera.io) tiene una versión accesible via web
+    - `tldr apt-get` muestra un ejemplo y caso de uso de `apt-get`
+    - `apt-get install tldr` instala TLDR
+
+## Instalando git
+
+### En Windows
+
+```powershell
+choco install git --yes
+```
+
+### En Linux
+
+En la mayor parte de las distros ya viene preinstalado. 
+Sino, se puede instalar siguiendo esta [guia](https://git-scm.com/download/linux). 
+
+### Comprobando la instalación
+
+```bash
+git version # muestra la versión
+```
+```
+git version 2.29.2.windows.1
+```
+
+-->
 </div>
 </div>
 </div>

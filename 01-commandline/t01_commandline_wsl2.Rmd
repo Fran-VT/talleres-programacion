@@ -132,8 +132,6 @@ Para salir de este ambiente Ubuntu, usamos `logout` como en una sesión SSH.
 - [OpenSUSE](https://www.microsoft.com/store/productId/9MZD0N9Z4M4H)
 - [Alpine](https://www.microsoft.com/en-us/p/alpine-wsl/9p804crf0395?activetab=pivot:overviewtab) - No oficial (aunque toma una imagen oficial)
 
-<! --
-
 # Comandos básicos
 
 La mayor parte de estos comandos existen tanto en Linux como en Windows Powershell (aunque en este ultimo realmente son alias). 
@@ -168,13 +166,13 @@ La parte más compleja y menos interoperable es cuando usamos comandos con `-par
     - `MKLINK \D <link> <target>` señala un link de `\D`irectorios
 
 ## Descargando archivos 
-
+<!-- TODO: @alejandro Crear un script de R que toma 3 datasets y hace una reducción dimensional -->
 - `curl` es _C (see) URL_, mapeado a _Invoke-WebRequest_ en Powershell.
     - `curl <url> -o <archivo>` descarga una URL para guardarla en un archivo
     - `curl -O <url>` descarga la URL a un archvio con su nombre. Usualmente usamos esto
 
 - `wget` es _Web GET_, mapeado a _Invoke-WebRequest_ en Powershell. Es el más facil de usar. 
-    - `wget <url>` descarga la URL a un archvio con su nombre
+    - `wget <url> <url2…>` descarga la URL a un archvio con su nombre
     - `wget -c <url>` permite continuar una descarga interrumpida
 
 - `Invoke-WebRequest` requiere un output explicito. 
@@ -224,13 +222,51 @@ La parte más compleja y menos interoperable es cuando usamos comandos con `-par
 
 ### Ejemplo de GREP para archivos
 
-<!-- TODO: ejemplo de renombrar 110 informes .xsls sin tocar el Word. -->
+GREP significa "global regular expression print", este comando es utilizado para realizar busqueda
+de patrones en archivos de textos.
+Estructura  y sintaxis del comando:
+Por defecto el comando grep devolvera todas las lineas en la que la expresion regular hace match,
+cabe destacar que, dentro del argumento de la expresion regular se pueden utilizar operadores.
+- `grep`
+    - `grep "expresion_regular" <archivo>`  
+Opciones utiles:
+
+-i	Ignora mayusculas/minusculas
+-w	Patron de palabra completa 
+-v	Inversion de grep, devuelve las lineas que no tienen match
+-n	Entrega el numero de lineas que contienen el patrón
+-r	Busca dentro de directorios de manera recursiva
+-l	Devuelve el nombre de los archivos que contienen el match 
+-c	Cuenta y devuelve el numero de match para el patrón entregado
+--color	los match se devuelven en color dentro de la terminal
+
+Operadores de expresiones regulares mas utilizados.
+"."	Matches any single character.	
+"?"	The preceding item is optional and will be matched, at most, once.
+*	The preceding item will be matched zero or more times.	
++	The preceding item will be matched one or more times.	
+{N}	The preceding item is matched exactly N times.	egrep '[0-9]{2} input
+{N,}	The preceding item is matched N or more times.	egrep '[0-9]{2,} input
+{N,M}	The preceding item is matched at least N times, but not more than M times.	egrep '[0-9]{2,4} input
+-	Represents the range if it’s not first or last in a list or the ending point of a range in a list.	grep ':/bin/[a-z]*' /etc/passwd
+^	Matches the empty string at the beginning of a line; also represents the characters not in the range of a list.	grep '^vivek' /etc/passwd
+grep '[^0-9]*' /etc/passwd
+$	Matches the empty string at the end of a line.	grep '^$' /etc/passwd
+\b	Matches the empty string at the edge of a word.	vivek '\bvivek' /etc/passwd
+\B	Matches the empty string provided it’s not at the edge of a word.	grep '\B/bin/bash /etc/passwd
+\<	Match the empty string at the beginning of word.	grep '\
+"\>"	Match the empty string at the end of word.
+
 
 ### Ejemplo de CG
 
 <!-- Talla interna cenedyn -->
 
+### Ejemplo de For Each
+
 ### Ejemplo de Sed
+
+<!-- TODO: ejemplo en SED con la cosa nefasta de ~GERO~ GERArdo -->
 
 ## Editores
 <!-- TODO: terminar los ejemplos de los editores -->
@@ -240,28 +276,28 @@ Este es el editor más familiar, con un modo de edición similar a Notepad, Word
 
 ### Vi
 
+Vi es cool si tienen que escribir codigo, y tiene un _paradigma_. 
+
 ## Manipulando computadoras remotas via SSH
 
 _Secure SHell_ es un programa presente en Linux y Windows 
 (activado por defecto en las ultimas versiones), 
 que permite establecer conexion a un host remoto a travez de una linea encriptada. 
 
-<!--
-- Usar SSH para conectarse a una instancia EC2
-- touch archivoConMiNombre.txt
-- vi o nano para que metan datos dentro de la cosa. 
-
-ubuntu@ip-172-31-37-126:~$ sudo vi /etc/ssh/sshd_config
-ubuntu@ip-172-31-37-126:~$ sudo vi /etc/ssh/sshd_config
-ubuntu@ip-172-31-37-126:~$ sudo service ssh restart
-ubuntu@ip-172-31-37-126:~$ su - demo1
-
--->
-
-```
+```bash
 ssh demo@<DIRECCIÓN DE LA MAQUINA>
 touch <NOMBRE>.txt
 ```
+
+### Copiando archivos entre remotos y locales con SCP
+
+- `scp` _Secure CoPy_ permite transferir archivos entre un computador remoto y un local. 
+    - `scp <remoto>:<archivo-remoto> <archivo-local>` para copiar de un remoto a local
+    - `scp <archivo-local> <remoto>:<archivo-remoto>` para copiar de un remoto a local
+    - `scp -r <remoto>:<directorio-remoto> <local>` para copiar un directorio remoto a local
+
+SCP funciona para transferencias pequeñas, como scripts (.Rmd, .py) o archivos de datos individuales. 
+Para transferir cantidades más grandes de datos, podemos usar 
 
 ### Acceso a Leftraru - Servidor de Supercomputo de Beacuhef
 
@@ -279,6 +315,7 @@ En casi todo sistema, es mala idea correr comandos como administrador.
 sudo rm -fr ./
 sudo rm -fr  /
 ```
+
 
 # Extras! - Cosas utiles y git para el proximo taller
 
@@ -312,5 +349,3 @@ git version # muestra la versión
 ```
 git version 2.29.2.windows.1
 ```
-
--->
