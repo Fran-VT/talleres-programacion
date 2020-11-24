@@ -234,40 +234,63 @@ Opciones utiles:
 -i	Ignora mayusculas/minusculas
 -w	Patron de palabra completa 
 -v	Inversion de grep, devuelve las lineas que no tienen match
--n	Entrega el numero de lineas que contienen el patrón
--r	Busca dentro de directorios de manera recursiva
 -l	Devuelve el nombre de los archivos que contienen el match 
 -c	Cuenta y devuelve el numero de match para el patrón entregado
---color	los match se devuelven en color dentro de la terminal
 
-Operadores de expresiones regulares mas utilizados.
+Operadores de expresiones regulares mas utilizados:
+
 "."	Matches any single character.	
-"?"	The preceding item is optional and will be matched, at most, once.
-*	The preceding item will be matched zero or more times.	
-+	The preceding item will be matched one or more times.	
-{N}	The preceding item is matched exactly N times.	egrep '[0-9]{2} input
-{N,}	The preceding item is matched N or more times.	egrep '[0-9]{2,} input
-{N,M}	The preceding item is matched at least N times, but not more than M times.	egrep '[0-9]{2,4} input
--	Represents the range if it’s not first or last in a list or the ending point of a range in a list.	grep ':/bin/[a-z]*' /etc/passwd
-^	Matches the empty string at the beginning of a line; also represents the characters not in the range of a list.	grep '^vivek' /etc/passwd
-grep '[^0-9]*' /etc/passwd
-$	Matches the empty string at the end of a line.	grep '^$' /etc/passwd
-\b	Matches the empty string at the edge of a word.	vivek '\bvivek' /etc/passwd
-\B	Matches the empty string provided it’s not at the edge of a word.	grep '\B/bin/bash /etc/passwd
-\<	Match the empty string at the beginning of word.	grep '\
-"\>"	Match the empty string at the end of word.
+"?"	El caracter subsecuente hace match como maximo 1 vez.
+"*"	El caracter subsecuente hace match 0 o mas veces.	
+"+"	El caracter subsecuente hace match 1 o mas veces.	
+### Ejemplos
+Por lo general querremos usar el comando grep en conjunto de otros comando utilizando pipes.
+'cat <archivo.fasta> | grep -c "ATG"' esto abrira el archivo de secuencias o archivo de texto plano 
+luego buscara el patron ATG o codon start , contara la frecuencia y retornara el numero de matches.
 
 
-### Ejemplo de CG
+### Ejemplo de ForEach 
+### Ejemplo de %CG
 
 <!-- Talla interna cenedyn -->
-
-### Ejemplo de For Each
+Foreach es un comando de C shell, por lo que no lo podremos usar a menos de que instalemos csh
+ "sudo apt install csh" y abrir la desde la terminal utilizando "CSH"
+- `foreach n (lista de elementos)
+    #comando1 $n <- para los n elementos de la lista
+    #comando2 $n <- para los n elementos de la lista
+    end `
+Generar una matriz de las frecuencias de los nucleotidos  por posicion
+'cat >> estructuramatriz
+A
+C
+T
+G
+'
+'foreach pos (1 2 3 4 5 6 7 8 9)
+cut -c$pos <archivo > | grep "A" | wc -l >> temporal$pos.txt
+cut -c$pos <archivo> | grep "C" | wc -l >> temporal$pos.txt 
+cut -c$pos <archivo> | grep "T" | wc -l >> temporal$pos.txt 
+cut -c$pos <archivo> | grep "G" | wc -l >> temporal$pos.txt 
+end
+'
+'paste estructuramatriz temporal* > Matriz_ACTG.txt
+rm temporal*.txt'
+De una forma similar podremos estimar el porcentaje de GC existente en la o las secuencias.
+'cat <archivo> | grep -c "C"'
+'cat <archivo> | grep -c "G"'
+'cat <archivo> | grep -c "T"'
+'cat <archivo> | grep -c "A"' 
+sumar total, G + C y calcular %.
+### Ejemplo WC 
+Word count es un comando que permite realizar diferentes conteos, incluyendo palabras y
+saltos de lineas.
 
 ### Ejemplo de Sed
 
 <!-- TODO: ejemplo en SED con la cosa nefasta de ~GERO~ GERArdo -->
 
+### How to stop a procces (podria ser vital explicarlo)
+si se ven en problemas CTRL+C, es la alternativa mas rapida para detener un proceso corriendo
 ## Editores
 <!-- TODO: terminar los ejemplos de los editores -->
 ### Nano
