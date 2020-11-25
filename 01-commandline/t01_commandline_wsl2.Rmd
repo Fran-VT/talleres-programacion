@@ -34,8 +34,6 @@ Muchos programas de bioinformatica no poseen una interfaz grafica, solo usando l
 - [FISH](http://fishshell.com/) _Friendly Interactive SHell_ una shell para 1990'. Soporta autocompletado, plugins, sugerencias, etc. 
   Un contra es que la sintaxis es distinta a la de bash, por lo que aun requiere bash para programas bash. 
 
-<!-- TODO: completar shells -->
-
 # Instalando lineas de comandos POSIX en Windows
 
 ## Gestor de paquetes en Windows
@@ -169,7 +167,7 @@ La parte más compleja y menos interoperable es cuando usamos comandos con `-par
     - `MKLINK \D <link> <target>` señala un link de `\D`irectorios
 
 ## Descargando archivos 
-<!-- TODO: @alejandro Crear un script de R que toma 3 datasets y hace una reducción dimensional -->
+
 - `curl` es _C (see) URL_, mapeado a _Invoke-WebRequest_ en Powershell.
     - `curl <url> -o <archivo>` descarga una URL para guardarla en un archivo
     - `curl -O <url>` descarga la URL a un archvio con su nombre. Usualmente usamos esto
@@ -181,7 +179,11 @@ La parte más compleja y menos interoperable es cuando usamos comandos con `-par
 - `Invoke-WebRequest` requiere un output explicito. 
     - `Invoke-WebRequest <url> -OutFile <archivo>`
     - `Invoke-WebRequest <url> -Method Get -o <archivo>` funciona igual que Wget
-    - `wget <url> -o <archivo>` es valido en Windows base
+    - `curl <url> -o <archivo>` es valido en Windows base
+
+```bash
+curl "URL_REEMPLAZAR" -o "ejemplo.zip" # Descargando un ejemplo
+```
 
 ## Descomprimiendo archivos
 
@@ -204,6 +206,11 @@ La parte más compleja y menos interoperable es cuando usamos comandos con `-par
 
 - `7zip` tiene linea de comandos para Linux, Mac, Windows. 
 
+```
+unzip ejemplo.zip -d Ejemplo       # Linux
+Expand-Archive ejemplo.zip Ejemplo # PowerShell
+```
+
 ## Explorando y renombrando archivos
 
 - `cat` es _conCATenate_, mapeado a _Get-Content_ en Powershell.
@@ -220,6 +227,12 @@ La parte más compleja y menos interoperable es cuando usamos comandos con `-par
     - `tail <archivo>` muestra las 10 ultimas lineas de _archivo_
     - `tail -n <archivo>` muestra las _n_ ultimas lineas de _archivo_
     - En Windows, `Get-Content <archivo> -Tail 10` tiene el mismo comportamiento
+
+```bash
+cd Ejemplo       # Entra al directorio descomprimido
+cat script.r     # Explorando el script
+Rscript script.r # Ejecutandolo
+```
 
 <!-- AQUI SE ROMPE COMPATIBILIDAD CON WINDOWS NATIVO -->  
 
@@ -354,7 +367,7 @@ sed -i 's/\/home\/qiime2/\$DATOS/g' procesar.tsv
   ``sed 's#<regex>#<reemplazar>#' <archivo>``
 
 ## Editores
-<!-- TODO: terminar los ejemplos de los editores -->
+
 ### Nano
 
 Este es el editor más familiar, con un modo de edición similar a Notepad, Word, cualquier programa general de texto.
