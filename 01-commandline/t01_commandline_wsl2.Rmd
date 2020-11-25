@@ -250,37 +250,57 @@ luego buscara el patron ATG o codon start , contara la frecuencia y retornara el
 
 
 ### Ejemplo de ForEach 
-### Ejemplo de %CG
 
 <!-- Talla interna cenedyn -->
-Foreach es un comando de C shell, por lo que no lo podremos usar a menos de que instalemos csh
- "sudo apt install csh" y abrir la desde la terminal utilizando "CSH"
-- `foreach n (lista de elementos)
-    #comando1 $n <- para los n elementos de la lista
-    #comando2 $n <- para los n elementos de la lista
-    end `
-Generar una matriz de las frecuencias de los nucleotidos  por posicion
-'cat >> estructuramatriz
+Foreach es un comando de C shell, por lo que no lo podremos usar a menos de que 
+instalemos csh:
+```{bash}
+sudo apt install csh
+#Abriremos csh utilizando el comando 
+csh
+```
+
+
+```{bash}
+#Estructura basica del comando foreach
+foreach n (lista de elementos)
+    comando1 $n  #para los n elementos de la lista
+    comando2 $n #para los n elementos de la lista
+    end   # termino del loop
+```
+ 
+```{bash}
+#Generaremos una tabla vacia llamada estructura matriz
+cat >> estructuramatriz
 A
 C
 T
 G
-'
-'foreach pos (1 2 3 4 5 6 7 8 9)
+# ahora contaremos la frecuencia de los nucleotidos en las primeras 9 posiciones
+foreach pos (1 2 3 4 5 6 7 8 9)
 cut -c$pos <archivo > | grep "A" | wc -l >> temporal$pos.txt
 cut -c$pos <archivo> | grep "C" | wc -l >> temporal$pos.txt 
 cut -c$pos <archivo> | grep "T" | wc -l >> temporal$pos.txt 
 cut -c$pos <archivo> | grep "G" | wc -l >> temporal$pos.txt 
 end
-'
-'paste estructuramatriz temporal* > Matriz_ACTG.txt
-rm temporal*.txt'
+#finalmente agregaremos la frecuencia a la tabla generada al principio
+
+paste estructuramatriz temporal* > Matriz_ACTG.txt
+#eliminaremos el archivo temporal que guardaba la frecuencia de los nucleotidos
+rm temporal*.txt
+```
+
 De una forma similar podremos estimar el porcentaje de GC existente en la o las secuencias.
-'cat <archivo> | grep -c "C"'
-'cat <archivo> | grep -c "G"'
-'cat <archivo> | grep -c "T"'
-'cat <archivo> | grep -c "A"' 
-sumar total, G + C y calcular %.
+```{bash}
+#de manera similar podemos  contar los nucleotidos de todo un archivo lo que podria ser util para estimar el %GC
+cat <archivo> | grep -c "C"
+cat <archivo> | grep -c "G"
+cat <archivo> | grep -c "T"
+cat <archivo> | grep -c "A"
+```
+
+
+
 ### Ejemplo WC 
 Word count es un comando que permite realizar diferentes conteos, incluyendo palabras y
 saltos de lineas.
