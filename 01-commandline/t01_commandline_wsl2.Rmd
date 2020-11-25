@@ -10,26 +10,29 @@ Muchos programas de bioinformatica no poseen una interfaz grafica, solo usando l
 
 - **Graphic User Interface** son programas con ventanas y botones, que manejamos en dia a dia. 
 - **Terminal** permite interactuar con la computadora mediante comandos del teclado, desde instrucciones a pulsasiones de teclas. 
-    - **Shell** es 
-        - **Kernel** es el 
+    - **Shell** es el interprete de comandos que media entre el usuario y el kernel. Existen en distintos tipos, como _Bash_, _Zsh_, _PowerShell_, etc. 
+        - **Kernel** es la parte fundamental del sistema operativo, que hace interfaz con el hardware. 
+          Multiples SO comparten un mismo kernel, como todos los _flavors_ de Linux, o las versiones de Windows con Kernel _NT_. 
             - **Host** es la maquina en si, los procesadores que interpretan codigo binario, bits de memoria, etc. 
 
 **Porque la terminal es cool?**
 
 - Acceso programatico, aka. que scripts y programas pueden acceder a la terminal para hacer trabajo.
+    - Objetivmante R, Python, etc. son lineas de comandos. RStudio solo es una interfaz bonita _encima_. 
 - Ejecutar acciones complejas, como configurar multiples clusters desde un unico `.config`
 - La mayor parte de los programas tiene un CLI pero no necesariamente un GUI, especialmente programas nicho como los usados en Ciencia. 
-    - Hadoop
-    - Slurm
-    - Cosas CERN --posiblemente muchas, Laftraru, etc. 
+    - Hadoop, Slurm
+    - Clusters de computo: CERN, Laftraru, etc. 
     - AWS-CLI
 
 ## Terminales más usadas
 
-- [PowerShell]() en Windows
-- [BASH]() _Bourne Again SHell_ en la mayor parte de los sistemas Linux
-- [ZSH]()
-- [FISH]() una shell para 1990'
+- [PowerShell](https://microsoft.com/powershell) en Windows. Es más un lenguaje de scripting que una shell interactiva
+- [BASH](https://www.gnu.org/software/bash/) _Bourne Again SHell_ en la mayor parte de los sistemas Linux. 
+- [ZSH](http://www.zsh.org/) o _Z-SHell_ es una shell moderna pensada en interactividad, 
+  con soporte para corrección ortográfica, sugerencias, autocompletado, etc. Está por defecto en Mac OS
+- [FISH](http://fishshell.com/) _Friendly Interactive SHell_ una shell para 1990'. Soporta autocompletado, plugins, sugerencias, etc. 
+  Un contra es que la sintaxis es distinta a la de bash, por lo que aun requiere bash para programas bash. 
 
 <!-- TODO: completar shells -->
 
@@ -356,9 +359,33 @@ sed -i 's/\/home\/qiime2/\$DATOS/g' procesar.tsv
 
 Este es el editor más familiar, con un modo de edición similar a Notepad, Word, cualquier programa general de texto.
 
+- `^C` significa `Ctrl` `C`. Por ejemplo, para guardar y salir es `^X`, o `Ctrl` `x`
+- `M-6` significa `Macro` `6`. Usualmente la tecla _macro_ está mapeada a `Alt`
+
 ### Vi
 
-Vi es cool si tienen que escribir codigo, y tiene un _paradigma_. 
+Vi es un editor enfocado en código, por lo que el paradigma es distinto a los de un editor comun como Notepad. 
+En primer lugar, _vi_ tiene varios modos operativos. 
+
+- **Normal**, `Esc` en que espera otros modos 
+- **Insert**, `i` en que inserta texto normalmente, como seria Notepad. 
+- **Replace**,`R` en que reemplazamos el bufer preexistente, como modo _insert_
+- **Command**,`:` para comandos asignables como `:comando`, por ejemplo `:wq!` _Writte Quit (all)_
+
+Luego, existen comandos distintos para hacer cosas en modo Normal
+
+- `O` y `o` señalan crear una nueva linea arriba o abajo de la actual
+- Usamos `h` o `l` para movernos irquierda o derecha
+- Usamos `j` o `k` para movernos arriba o abajo
+- `x` elimina caracteres. `5x` elimina 5 caracteres 
+- `dw` elimina palabras. `5dw` elimina 5 palabras 
+- `dd` elimina una linea. `5dd` eliminaria 5 lineas
+- `.` repite el ultimo comando. Por ejemplo `5dw` `.` eliminaria 10 palabras
+
+Existen muchas más opciones para Vi y sus derivados, como Vim. 
+Varios programas, como VS Code, aceptan una sintaxis como Vi, dado que resulta más rapida para escribir código. 
+[ss64](https://ss64.com/vi.html) tiene un cheatsheet rapido de Vi. 
+[Wikibooks](https://en.wikibooks.org/wiki/Learning_the_vi_Editor) tiene un libro sobre Vi y Vim. 
 
 ## Manipulando computadoras remotas via SSH
 
@@ -367,8 +394,16 @@ _Secure SHell_ es un programa presente en Linux y Windows
 que permite establecer conexion a un host remoto a travez de una linea encriptada. 
 
 ```bash
+# Ejemplo de está clase
 ssh demo@<DIRECCIÓN DE LA MAQUINA>
+# Pass es "demo1234"
+
+# Creando un archivo con su nombre
 touch <NOMBRE>.txt
+
+# Tambien pueden usar vi o nano
+# vi   <NOMBRE>.txt
+# nano <NOMBRE>.txt
 ```
 
 ### Copiando archivos entre remotos y locales con SCP
@@ -378,16 +413,13 @@ touch <NOMBRE>.txt
     - `scp <archivo-local> <remoto>:<archivo-remoto>` para copiar de un remoto a local
     - `scp -r <remoto>:<directorio-remoto> <local>` para copiar un directorio remoto a local
 
-SCP funciona para transferencias pequeñas, como scripts (.Rmd, .py) o archivos de datos individuales. 
-Para transferir cantidades más grandes de datos, podemos usar 
+Manualmente, SCP funciona para transferencias pequeñas, como scripts (.Rmd, .py) o archivos de datos individuales. 
+Para transferir cantidades más grandes de datos (10s GB; 100+ archivos), podemos usar [RSync](https://rsync.samba.org/), abrir el servicio [SFTP](https://security.appspot.com/vsftpd.html) de la maquina Linux, 
+o usar servicios gestionados como Dropbox, Google Drive, OneDrive, etc; que resultan más convenientes. 
 
 ### Acceso a Leftraru - Servidor de Supercomputo de Beacuhef
 
-[Guia](https://wiki.nlhpc.cl/Tutorial_de_acceso_a_Leftraru_via_SSH)
-
-### Comportamientos extraños en Windows
-
-TODO: como se hace para que añada credenciales al archivo de configuración?
+[Guia](https://wiki.nlhpc.cl/Tutorial_de_acceso_a_Leftraru_via_SSH) para conectarse mediante SSH al Laboratorio Nacional para Computación de Alto Rendimiento. 
 
 ### SACRIFICANDO UNA EC2 para que vean porque root es demasiado poderoso
 
@@ -397,7 +429,6 @@ En casi todo sistema, es mala idea correr comandos como administrador.
 sudo rm -fr ./
 sudo rm -fr  /
 ```
-
 
 # Extras! - Cosas utiles y git para el proximo taller
 
