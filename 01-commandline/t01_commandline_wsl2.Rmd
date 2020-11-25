@@ -1,7 +1,7 @@
 ---
 {title: "Linea de comandos", subtitle: "POSIX en Windows" ,
 date: '2020-11-26',
-author: "Alejandro Acevedo-Aracena, _PhD_^[_FONDECYT Postdoctoral Fellow_, Universidad de Chile, deepen.data@gmail.com]; Manuel Muñoz-González^[_Pregrado_, Universidad de Chile]", output: {html_document: {theme: flatly, highlight: tango, toc: true, toc_float: {collapsed: false, smooth_scroll: true}, df_print: paged, code_folding: hide}, html_notebook: default}}
+author: "Alejandro Acevedo-Aracena, _PhD_^[_FONDECYT Postdoctoral Fellow_, Universidad de Chile, deepen.data@gmail.com]; Manuel Muñoz-González^[_Pregrado_, Universidad de Chile]", output: {html_document: {theme: flatly, highlight: tango, toc: true, toc_float: {collapsed: false, smooth_scroll: true}, df_print: paged}, html_notebook: default}}
 ---
 
 # Terminal, shells, y niveles de abstracción
@@ -227,88 +227,77 @@ de patrones en archivos de textos.
 
 Por defecto el comando grep devolvera todas las lineas en la que la expresion regular hace match. 
 Cabe destacar que se pueden utilizar operadores dentro del argumento de la expresion regular.
-- `grep`
-    - `grep "expresion_regular" <archivo>`  
+
+`grep "expresion_regular" <archivo>`  
+
 Opciones utiles:
 
--i	Ignora mayusculas/minusculas
--w	Patron de palabra completa 
--v	Inversion de grep, devuelve las lineas que no tienen match
--l	Devuelve el nombre de los archivos que contienen el match 
--c	Cuenta y devuelve el numero de match para el patrón entregado
+``-i``	Ignora mayusculas/minusculas
+``-w``	Patron de palabra completa 
+``-v``	Inversion de grep, devuelve las lineas que no tienen match
+``-l``	Devuelve el nombre de los archivos que contienen el match 
+``-c``	Cuenta y devuelve el numero de match para el patrón entregado
 
 Operadores de expresiones regulares mas utilizados:
 
-"."	Matches any single character.	
-"?"	El caracter subsecuente hace match como maximo 1 vez.
-"*"	El caracter subsecuente hace match 0 o mas veces.	
-"+"	El caracter subsecuente hace match 1 o mas veces.	
+``.``	Matches any single character.	
+``?``	El caracter subsecuente hace match como maximo 1 vez.
+``*``	El caracter subsecuente hace match 0 o mas veces.	
+``+``	El caracter subsecuente hace match 1 o mas veces.	
 
 Por lo general querremos usar el comando grep en conjunto de otros comando utilizando pipes.
-``cat <archivo.fasta> | grep -c "ATG"`` esto abrira el archivo de secuencias o archivo de texto plano 
-luego buscara el patron ATG o codon start , contara la frecuencia y retornara el numero de matches.
 
-<<<<<<< HEAD
+Por ejemplo, ``cat <archivo.fasta> | grep -c "ATG"`` esto abrira `<archivo.fasta>`, 
+y luego buscara el patron ATG o codon start, 
+contara la frecuencia y retornara el numero de matches.
 
 ### Ejemplo de ForEach 
 
-<!-- Talla interna cenedyn -->
-Foreach es un comando de C shell, por lo que no lo podremos usar a menos de que 
-instalemos csh:
-```{bash}
+```bash
+# Generaremos una tabla vacia llamada estructura matriz
+# Foreach es un comando de C shell, por lo que no lo podremos usar a menos de que instalemos csh
 sudo apt install csh
-#Abriremos csh utilizando el comando 
+# Abrireremos desde la terminal utilizando 
 csh
-```
+cat >> estructuramatriz
 
-
-```{bash}
 #Estructura basica del comando foreach
 foreach n (lista de elementos)
     comando1 $n  #para los n elementos de la lista
     comando2 $n #para los n elementos de la lista
     end   # termino del loop
 ```
- 
-```{bash}
-#Generaremos una tabla vacia llamada estructura matriz
-#Foreach es un comando de C shell, por lo que no lo podremos usar a menos de que instalemos csh
-sudo apt install csh
-#abrireremos desde la terminal utilizando 
-csh
-cat >> estructuramatriz
 
-foreach n (lista de elementos)
-    comando1 $n <- para los n elementos de la lista
-    comando2 $n <- para los n elementos de la lista
-    end 
-
-```
-```{bash}
+```bash
 #Generar una matriz de las frecuencias de los nucleotidos  para las 9 primeras posiciones
 cat >> estructuramatriz
+```
+```
 A
 C
 T
 G
-#ahora contaremos la frecuencia de los nucleotidos en las primeras 9 posiciones
+```
+
+```bash
+# Ahora contaremos la frecuencia de los nucleotidos en las primeras 9 posiciones
 foreach pos (1 2 3 4 5 6 7 8 9 ) 
-cut -c$pos <archivo > | grep "A" | wc -l >> temporal$pos.txt
+cut -c$pos <archivo> | grep "A" | wc -l >> temporal$pos.txt
 cut -c$pos <archivo> | grep "C" | wc -l >> temporal$pos.txt 
 cut -c$pos <archivo> | grep "T" | wc -l >> temporal$pos.txt 
 cut -c$pos <archivo> | grep "G" | wc -l >> temporal$pos.txt 
 end
-#finalmente agregaremos la frecuencia a la tabla generada al principio
 
+# Finalmente agregaremos la frecuencia a la tabla generada al principio
 paste estructuramatriz temporal* > Matriz_ACTG.txt
-#eliminaremos el archivo temporal que guardaba la frecuencia de los nucleotidos
+
+# Eliminaremos el archivo temporal que guardaba la frecuencia de los nucleotidos
 rm temporal*.txt
 ```
 
-```
-
 De una forma similar podremos estimar el porcentaje de GC existente en la o las secuencias.
-```{bash}
+
+```bash
 #de manera similar podemos  contar los nucleotidos de todo un archivo lo que podria ser util para estimar el %GC
 cat <archivo> | grep -c "C"
 cat <archivo> | grep -c "G"
@@ -316,12 +305,8 @@ cat <archivo> | grep -c "T"
 cat <archivo> | grep -c "A"
 ```
 
-```
-
-
-
 ### Ejemplo WC 
-
+<!-- TODO: Qué pasa con este ejemplo? -->
 _Word count_ es un comando que permite realizar diferentes conteos, incluyendo palabras y saltos de lineas.
 
 ### Ejemplo de Sed
@@ -424,6 +409,7 @@ sudo rm -fr  /
     - [TLDR.ostera.io](https://tldr.ostera.io) tiene una versión accesible via web
     - `tldr apt-get` muestra un ejemplo y caso de uso de `apt-get`
     - `apt-get install tldr` instala TLDR
+    - (aún) no está para Windows directamente
 
 ## Instalando git
 
