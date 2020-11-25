@@ -1,7 +1,7 @@
 ---
 {title: "Linea de comandos", subtitle: "POSIX en Windows" ,
 date: '2020-11-26',
-author: "Alejandro Acevedo-Aracena, _PhD_^[_FONDECYT Postdoctoral Fellow_, Universidad de Chile, deepen.data@gmail.com]; Manuel Muñoz-González^[_Pregrado_, Universidad de Chile]", output: {html_document: {theme: flatly, highlight: tango, toc: true, toc_float: {collapsed: false, smooth_scroll: true}, df_print: paged, code_folding: show}, html_notebook: default}}
+author: "Alejandro Acevedo-Aracena, _PhD_^[_FONDECYT Postdoctoral Fellow_, Universidad de Chile, deepen.data@gmail.com]; Manuel Muñoz-González^[_Pregrado_, Universidad de Chile]", output: {html_document: {theme: flatly, highlight: tango, toc: true, toc_float: {collapsed: false, smooth_scroll: true}, df_print: paged, code_folding: hide}, html_notebook: default}}
 ---
 
 # Terminal, shells, y niveles de abstracción
@@ -222,11 +222,11 @@ La parte más compleja y menos interoperable es cuando usamos comandos con `-par
 
 ### Ejemplo de GREP para archivos
 
-GREP significa "global regular expression print", este comando es utilizado para realizar busqueda
+GREP significa _"global regular expression print"_, es utilizado para realizar busqueda
 de patrones en archivos de textos.
-Estructura  y sintaxis del comando:
-Por defecto el comando grep devolvera todas las lineas en la que la expresion regular hace match,
-cabe destacar que, dentro del argumento de la expresion regular se pueden utilizar operadores.
+
+Por defecto el comando grep devolvera todas las lineas en la que la expresion regular hace match. 
+Cabe destacar que se pueden utilizar operadores dentro del argumento de la expresion regular.
 - `grep`
     - `grep "expresion_regular" <archivo>`  
 Opciones utiles:
@@ -243,11 +243,12 @@ Operadores de expresiones regulares mas utilizados:
 "?"	El caracter subsecuente hace match como maximo 1 vez.
 "*"	El caracter subsecuente hace match 0 o mas veces.	
 "+"	El caracter subsecuente hace match 1 o mas veces.	
-### Ejemplos
+
 Por lo general querremos usar el comando grep en conjunto de otros comando utilizando pipes.
-'cat <archivo.fasta> | grep -c "ATG"' esto abrira el archivo de secuencias o archivo de texto plano 
+``cat <archivo.fasta> | grep -c "ATG"`` esto abrira el archivo de secuencias o archivo de texto plano 
 luego buscara el patron ATG o codon start , contara la frecuencia y retornara el numero de matches.
 
+<<<<<<< HEAD
 
 ### Ejemplo de ForEach 
 
@@ -271,13 +272,27 @@ foreach n (lista de elementos)
  
 ```{bash}
 #Generaremos una tabla vacia llamada estructura matriz
+#Foreach es un comando de C shell, por lo que no lo podremos usar a menos de que instalemos csh
+sudo apt install csh
+#abrireremos desde la terminal utilizando 
+csh
+cat >> estructuramatriz
+
+foreach n (lista de elementos)
+    comando1 $n <- para los n elementos de la lista
+    comando2 $n <- para los n elementos de la lista
+    end 
+
+```
+```{bash}
+#Generar una matriz de las frecuencias de los nucleotidos  para las 9 primeras posiciones
 cat >> estructuramatriz
 A
 C
 T
 G
-# ahora contaremos la frecuencia de los nucleotidos en las primeras 9 posiciones
-foreach pos (1 2 3 4 5 6 7 8 9)
+#ahora contaremos la frecuencia de los nucleotidos en las primeras 9 posiciones
+foreach pos (1 2 3 4 5 6 7 8 9 ) 
 cut -c$pos <archivo > | grep "A" | wc -l >> temporal$pos.txt
 cut -c$pos <archivo> | grep "C" | wc -l >> temporal$pos.txt 
 cut -c$pos <archivo> | grep "T" | wc -l >> temporal$pos.txt 
@@ -290,6 +305,8 @@ paste estructuramatriz temporal* > Matriz_ACTG.txt
 rm temporal*.txt
 ```
 
+```
+
 De una forma similar podremos estimar el porcentaje de GC existente en la o las secuencias.
 ```{bash}
 #de manera similar podemos  contar los nucleotidos de todo un archivo lo que podria ser util para estimar el %GC
@@ -299,18 +316,55 @@ cat <archivo> | grep -c "T"
 cat <archivo> | grep -c "A"
 ```
 
+```
+
 
 
 ### Ejemplo WC 
-Word count es un comando que permite realizar diferentes conteos, incluyendo palabras y
-saltos de lineas.
+
+_Word count_ es un comando que permite realizar diferentes conteos, incluyendo palabras y saltos de lineas.
 
 ### Ejemplo de Sed
 
-<!-- TODO: ejemplo en SED con la cosa nefasta de ~GERO~ GERArdo -->
+Otro programa que podemos usar para reemplazos rapidos es _Scripted EDitting_,
+que tiene una sintaxis similar a _grep_ pero un foco más en scripts para modificación de texto. 
+Osea, esta pensado más para escribir scripts que automatizen un trabajo repetitivo, más que para ser usado continuamente. 
 
-### How to stop a procces (podria ser vital explicarlo)
-si se ven en problemas CTRL+C, es la alternativa mas rapida para detener un proceso corriendo
+Un caso de uso es reemplazar variables como rutas de archivos dentro de un cript o programa que qeuremos correr. 
+Por ejemplo, esta tabla `procesar.tsv` incluye una ruta global que no existe en el nuevo sistema. 
+
+| sample-id   | forward-absolute-filepath          | reverse-absolute-filepath          |
+| :---------- | :--------------------------------- | :--------------------------------- |
+| sample-001  | /home/qiime2/sample001_R1.fastq.gz | /home/qiime2/sample001_R2.fastq.gz |
+| sample-002  | /home/qiime2/sample002_R1.fastq.gz | /home/qiime2/sample002_R2.fastq.gz |
+| …           | …                                  | …                                  |
+| sample-478  | /home/qiime2/sample478_R1.fastq.gz | /home/qiime2/sample478_R2.fastq.gz |
+
+En este caso es preferible reemplazar `/home/qiime2` por una **variable de ambiente** 
+`$DATOS` que apunta al directorio donde están. 
+``` bash
+# Probamos el comando
+# Significa -recursive substitute/A/B/global <archivo>
+sed -r 's/\/home\/qiime2/\$DATOS/g' procesar.tsv | head -5
+```
+
+| sample-id   | forward-absolute-filepath   | reverse-absolute-filepath   |
+| :---------- | :-------------------------- | :-------------------------- |
+| sample-001  | $DATA/sample001_R1.fastq.gz | $DATA/sample001_R2.fastq.gz |
+| sample-002  | $DATA/sample002_R1.fastq.gz | $DATA/sample002_R2.fastq.gz |
+| …           | …                           | …                           |
+| sample-478  | $DATA/sample478_R1.fastq.gz | $DATA/sample478_R2.fastq.gz |
+
+Validando que el reemplazo funciona, podemos hacerlo definitivo con `-i` _in-place_
+```bash
+sed -i 's/\/home\/qiime2/\$DATOS/g' procesar.tsv
+```
+- Podemos reemplazar multiples `-e`xpresiones en un unico comando 
+  ``sed -e 's/<regex>/<reemplazar>/' -e 's/<regex>/<reemplazar>/' <archivo>``
+
+- O usar otro caracter que no sea usado en nuestro reemplazo, en lugar de `/`
+  ``sed 's#<regex>#<reemplazar>#' <archivo>``
+
 ## Editores
 <!-- TODO: terminar los ejemplos de los editores -->
 ### Nano
