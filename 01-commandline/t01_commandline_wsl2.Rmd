@@ -239,7 +239,7 @@ Opciones utiles:
 
 Operadores de expresiones regulares mas utilizados:
 
-"."	Matches any single character.	
+"."	hace match con todos los caracteres.	
 "?"	El caracter subsecuente hace match como maximo 1 vez.
 "*"	El caracter subsecuente hace match 0 o mas veces.	
 "+"	El caracter subsecuente hace match 1 o mas veces.	
