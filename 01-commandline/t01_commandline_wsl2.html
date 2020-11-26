@@ -2942,9 +2942,9 @@ div.tocify {
 <li><strong>Graphic User Interface</strong> son programas con ventanas y botones, que manejamos en dia a dia.</li>
 <li><strong>Terminal</strong> permite interactuar con la computadora mediante comandos del teclado, desde instrucciones a pulsasiones de teclas.
 <ul>
-<li><strong>Shell</strong> es
+<li><strong>Shell</strong> es el interprete de comandos que media entre el usuario y el kernel. Existen en distintos tipos, como <em>Bash</em>, <em>Zsh</em>, <em>PowerShell</em>, etc.
 <ul>
-<li><strong>Kernel</strong> es el
+<li><strong>Kernel</strong> es la parte fundamental del sistema operativo, que hace interfaz con el hardware. Multiples SO comparten un mismo kernel, como todos los <em>flavors</em> de Linux, o las versiones de Windows con Kernel <em>NT</em>.
 <ul>
 <li><strong>Host</strong> es la maquina en si, los procesadores que interpretan codigo binario, bits de memoria, etc.</li>
 </ul></li>
@@ -2953,25 +2953,26 @@ div.tocify {
 </ul>
 <p><strong>Porque la terminal es cool?</strong></p>
 <ul>
-<li>Acceso programatico, aka. que scripts y programas pueden acceder a la terminal para hacer trabajo.</li>
+<li>Acceso programatico, aka. que scripts y programas pueden acceder a la terminal para hacer trabajo.
+<ul>
+<li>Objetivmante R, Python, etc. son lineas de comandos. RStudio solo es una interfaz bonita <em>encima</em>.</li>
+</ul></li>
 <li>Ejecutar acciones complejas, como configurar multiples clusters desde un unico <code>.config</code></li>
 <li>La mayor parte de los programas tiene un CLI pero no necesariamente un GUI, especialmente programas nicho como los usados en Ciencia.
 <ul>
-<li>Hadoop</li>
-<li>Slurm</li>
-<li>Cosas CERN –posiblemente muchas, Laftraru, etc.</li>
+<li>Hadoop, Slurm</li>
+<li>Clusters de computo: CERN, Laftraru, etc.</li>
 <li>AWS-CLI</li>
 </ul></li>
 </ul>
 <div id="terminales-más-usadas" class="section level2">
 <h2>Terminales más usadas</h2>
 <ul>
-<li><a href>PowerShell</a> en Windows</li>
-<li><a href>BASH</a> <em>Bourne Again SHell</em> en la mayor parte de los sistemas Linux</li>
-<li><a href>ZSH</a></li>
-<li><a href>FISH</a> una shell para 1990’</li>
+<li><a href="https://microsoft.com/powershell">PowerShell</a> en Windows. Es más un lenguaje de scripting que una shell interactiva</li>
+<li><a href="https://www.gnu.org/software/bash/">BASH</a> <em>Bourne Again SHell</em> en la mayor parte de los sistemas Linux.</li>
+<li><a href="http://www.zsh.org/">ZSH</a> o <em>Z-SHell</em> es una shell moderna pensada en interactividad, con soporte para corrección ortográfica, sugerencias, autocompletado, etc. Está por defecto en Mac OS</li>
+<li><a href="http://fishshell.com/">FISH</a> <em>Friendly Interactive SHell</em> una shell para 1990’. Soporta autocompletado, plugins, sugerencias, etc. Un contra es que la sintaxis es distinta a la de bash, por lo que aun requiere bash para programas bash.</li>
 </ul>
-<!-- TODO: completar shells -->
 </div>
 </div>
 <div id="instalando-lineas-de-comandos-posix-en-windows" class="section level1">
@@ -3094,7 +3095,6 @@ Welcome to Ubuntu 20.04.1 LTS (GNU/Linux 4.4.0-19041-Microsoft x86_64)
 </div>
 <div id="descargando-archivos" class="section level2">
 <h2>Descargando archivos</h2>
-<!-- TODO: @alejandro Crear un script de R que toma 3 datasets y hace una reducción dimensional -->
 <ul>
 <li><code>curl</code> es <em>C (see) URL</em>, mapeado a <em>Invoke-WebRequest</em> en Powershell.
 <ul>
@@ -3110,9 +3110,10 @@ Welcome to Ubuntu 20.04.1 LTS (GNU/Linux 4.4.0-19041-Microsoft x86_64)
 <ul>
 <li><code>Invoke-WebRequest &lt;url&gt; -OutFile &lt;archivo&gt;</code></li>
 <li><code>Invoke-WebRequest &lt;url&gt; -Method Get -o &lt;archivo&gt;</code> funciona igual que Wget</li>
-<li><code>wget &lt;url&gt; -o &lt;archivo&gt;</code> es valido en Windows base</li>
+<li><code>curl &lt;url&gt; -o &lt;archivo&gt;</code> es valido en Windows base</li>
 </ul></li>
 </ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="ex">curl</span> <span class="st">&quot;URL_REEMPLAZAR&quot;</span> -o <span class="st">&quot;ejemplo.zip&quot;</span> <span class="co"># Descargando un ejemplo</span></span></code></pre></div>
 </div>
 <div id="descomprimiendo-archivos" class="section level2">
 <h2>Descomprimiendo archivos</h2>
@@ -3139,6 +3140,8 @@ Welcome to Ubuntu 20.04.1 LTS (GNU/Linux 4.4.0-19041-Microsoft x86_64)
 </ul></li>
 <li><code>7zip</code> tiene linea de comandos para Linux, Mac, Windows.</li>
 </ul>
+<pre><code>unzip ejemplo.zip -d Ejemplo       # Linux
+Expand-Archive ejemplo.zip Ejemplo # PowerShell</code></pre>
 </div>
 <div id="explorando-y-renombrando-archivos" class="section level2">
 <h2>Explorando y renombrando archivos</h2>
@@ -3162,6 +3165,9 @@ Welcome to Ubuntu 20.04.1 LTS (GNU/Linux 4.4.0-19041-Microsoft x86_64)
 <li>En Windows, <code>Get-Content &lt;archivo&gt; -Tail 10</code> tiene el mismo comportamiento</li>
 </ul></li>
 </ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="bu">cd</span> Ejemplo       <span class="co"># Entra al directorio descomprimido</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="fu">cat</span> script.r     <span class="co"># Explorando el script</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="ex">Rscript</span> script.r <span class="co"># Ejecutandolo</span></span></code></pre></div>
 <!-- AQUI SE ROMPE COMPATIBILIDAD CON WINDOWS NATIVO -->
 <div id="ejemplo-de-grep-para-archivos" class="section level3">
 <h3>Ejemplo de GREP para archivos</h3>
@@ -3179,43 +3185,43 @@ Welcome to Ubuntu 20.04.1 LTS (GNU/Linux 4.4.0-19041-Microsoft x86_64)
 </div>
 <div id="ejemplo-de-foreach" class="section level3">
 <h3>Ejemplo de ForEach</h3>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Generaremos una tabla vacia llamada estructura matriz</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="co"># Foreach es un comando de C shell, por lo que no lo podremos usar a menos de que instalemos csh</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="fu">sudo</span> apt install csh</span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="co"># Abrireremos desde la terminal utilizando </span></span>
-<span id="cb5-5"><a href="#cb5-5"></a><span class="ex">csh</span></span>
-<span id="cb5-6"><a href="#cb5-6"></a><span class="fu">cat</span> <span class="op">&gt;&gt;</span> estructuramatriz</span>
-<span id="cb5-7"><a href="#cb5-7"></a></span>
-<span id="cb5-8"><a href="#cb5-8"></a><span class="co">#Estructura basica del comando foreach</span></span>
-<span id="cb5-9"><a href="#cb5-9"></a><span class="ex">foreach</span> n (lista de elementos)</span>
-<span id="cb5-10"><a href="#cb5-10"></a>    <span class="ex">comando1</span> <span class="va">$n</span>  <span class="co">#para los n elementos de la lista</span></span>
-<span id="cb5-11"><a href="#cb5-11"></a>    <span class="ex">comando2</span> <span class="va">$n</span> <span class="co">#para los n elementos de la lista</span></span>
-<span id="cb5-12"><a href="#cb5-12"></a>    <span class="ex">end</span>   <span class="co"># termino del loop</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">#Generar una matriz de las frecuencias de los nucleotidos  para las 9 primeras posiciones</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">cat</span> <span class="op">&gt;&gt;</span> estructuramatriz</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># Generaremos una tabla vacia llamada estructura matriz</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="co"># Foreach es un comando de C shell, por lo que no lo podremos usar a menos de que instalemos csh</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="fu">sudo</span> apt install csh</span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="co"># Abrireremos desde la terminal utilizando </span></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="ex">csh</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="fu">cat</span> <span class="op">&gt;&gt;</span> estructuramatriz</span>
+<span id="cb8-7"><a href="#cb8-7"></a></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="co">#Estructura basica del comando foreach</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="ex">foreach</span> n (lista de elementos)</span>
+<span id="cb8-10"><a href="#cb8-10"></a>    <span class="ex">comando1</span> <span class="va">$n</span>  <span class="co">#para los n elementos de la lista</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a>    <span class="ex">comando2</span> <span class="va">$n</span> <span class="co">#para los n elementos de la lista</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a>    <span class="ex">end</span>   <span class="co"># termino del loop</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a><span class="co">#Generar una matriz de las frecuencias de los nucleotidos  para las 9 primeras posiciones</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">cat</span> <span class="op">&gt;&gt;</span> estructuramatriz</span></code></pre></div>
 <pre><code>A
 C
 T
 G</code></pre>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># Ahora contaremos la frecuencia de los nucleotidos en las primeras 9 posiciones</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="ex">foreach</span> pos (1 2 3 4 5 6 7 8 9 ) </span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="fu">cut</span> -c<span class="va">$pos</span> <span class="op">&lt;</span>archivo<span class="op">&gt;</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="st">&quot;A&quot;</span> <span class="kw">|</span> <span class="fu">wc</span> -l <span class="op">&gt;&gt;</span> temporal<span class="va">$pos</span>.txt</span>
-<span id="cb8-4"><a href="#cb8-4"></a><span class="fu">cut</span> -c<span class="va">$pos</span> <span class="op">&lt;</span>archivo<span class="op">&gt;</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="st">&quot;C&quot;</span> <span class="kw">|</span> <span class="fu">wc</span> -l <span class="op">&gt;&gt;</span> temporal<span class="va">$pos</span>.txt </span>
-<span id="cb8-5"><a href="#cb8-5"></a><span class="fu">cut</span> -c<span class="va">$pos</span> <span class="op">&lt;</span>archivo<span class="op">&gt;</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="st">&quot;T&quot;</span> <span class="kw">|</span> <span class="fu">wc</span> -l <span class="op">&gt;&gt;</span> temporal<span class="va">$pos</span>.txt </span>
-<span id="cb8-6"><a href="#cb8-6"></a><span class="fu">cut</span> -c<span class="va">$pos</span> <span class="op">&lt;</span>archivo<span class="op">&gt;</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="st">&quot;G&quot;</span> <span class="kw">|</span> <span class="fu">wc</span> -l <span class="op">&gt;&gt;</span> temporal<span class="va">$pos</span>.txt </span>
-<span id="cb8-7"><a href="#cb8-7"></a><span class="ex">end</span></span>
-<span id="cb8-8"><a href="#cb8-8"></a></span>
-<span id="cb8-9"><a href="#cb8-9"></a><span class="co"># Finalmente agregaremos la frecuencia a la tabla generada al principio</span></span>
-<span id="cb8-10"><a href="#cb8-10"></a><span class="ex">paste</span> estructuramatriz temporal* <span class="op">&gt;</span> Matriz_ACTG.txt</span>
-<span id="cb8-11"><a href="#cb8-11"></a></span>
-<span id="cb8-12"><a href="#cb8-12"></a><span class="co"># Eliminaremos el archivo temporal que guardaba la frecuencia de los nucleotidos</span></span>
-<span id="cb8-13"><a href="#cb8-13"></a><span class="fu">rm</span> temporal*.txt</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># Ahora contaremos la frecuencia de los nucleotidos en las primeras 9 posiciones</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="ex">foreach</span> pos (1 2 3 4 5 6 7 8 9 ) </span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="fu">cut</span> -c<span class="va">$pos</span> <span class="op">&lt;</span>archivo<span class="op">&gt;</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="st">&quot;A&quot;</span> <span class="kw">|</span> <span class="fu">wc</span> -l <span class="op">&gt;&gt;</span> temporal<span class="va">$pos</span>.txt</span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="fu">cut</span> -c<span class="va">$pos</span> <span class="op">&lt;</span>archivo<span class="op">&gt;</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="st">&quot;C&quot;</span> <span class="kw">|</span> <span class="fu">wc</span> -l <span class="op">&gt;&gt;</span> temporal<span class="va">$pos</span>.txt </span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="fu">cut</span> -c<span class="va">$pos</span> <span class="op">&lt;</span>archivo<span class="op">&gt;</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="st">&quot;T&quot;</span> <span class="kw">|</span> <span class="fu">wc</span> -l <span class="op">&gt;&gt;</span> temporal<span class="va">$pos</span>.txt </span>
+<span id="cb11-6"><a href="#cb11-6"></a><span class="fu">cut</span> -c<span class="va">$pos</span> <span class="op">&lt;</span>archivo<span class="op">&gt;</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="st">&quot;G&quot;</span> <span class="kw">|</span> <span class="fu">wc</span> -l <span class="op">&gt;&gt;</span> temporal<span class="va">$pos</span>.txt </span>
+<span id="cb11-7"><a href="#cb11-7"></a><span class="ex">end</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a></span>
+<span id="cb11-9"><a href="#cb11-9"></a><span class="co"># Finalmente agregaremos la frecuencia a la tabla generada al principio</span></span>
+<span id="cb11-10"><a href="#cb11-10"></a><span class="ex">paste</span> estructuramatriz temporal* <span class="op">&gt;</span> Matriz_ACTG.txt</span>
+<span id="cb11-11"><a href="#cb11-11"></a></span>
+<span id="cb11-12"><a href="#cb11-12"></a><span class="co"># Eliminaremos el archivo temporal que guardaba la frecuencia de los nucleotidos</span></span>
+<span id="cb11-13"><a href="#cb11-13"></a><span class="fu">rm</span> temporal*.txt</span></code></pre></div>
 <p>De una forma similar podremos estimar el porcentaje de GC existente en la o las secuencias.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a><span class="co">#de manera similar podemos  contar los nucleotidos de todo un archivo lo que podria ser util para estimar el %GC</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">cat</span> <span class="op">&lt;</span>archivo<span class="op">&gt;</span> <span class="kw">|</span> <span class="fu">grep</span> -c <span class="st">&quot;C&quot;</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a><span class="fu">cat</span> <span class="op">&lt;</span>archivo<span class="op">&gt;</span> <span class="kw">|</span> <span class="fu">grep</span> -c <span class="st">&quot;G&quot;</span></span>
-<span id="cb9-4"><a href="#cb9-4"></a><span class="fu">cat</span> <span class="op">&lt;</span>archivo<span class="op">&gt;</span> <span class="kw">|</span> <span class="fu">grep</span> -c <span class="st">&quot;T&quot;</span></span>
-<span id="cb9-5"><a href="#cb9-5"></a><span class="fu">cat</span> <span class="op">&lt;</span>archivo<span class="op">&gt;</span> <span class="kw">|</span> <span class="fu">grep</span> -c <span class="st">&quot;A&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1"></a><span class="co">#de manera similar podemos  contar los nucleotidos de todo un archivo lo que podria ser util para estimar el %GC</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="fu">cat</span> <span class="op">&lt;</span>archivo<span class="op">&gt;</span> <span class="kw">|</span> <span class="fu">grep</span> -c <span class="st">&quot;C&quot;</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="fu">cat</span> <span class="op">&lt;</span>archivo<span class="op">&gt;</span> <span class="kw">|</span> <span class="fu">grep</span> -c <span class="st">&quot;G&quot;</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="fu">cat</span> <span class="op">&lt;</span>archivo<span class="op">&gt;</span> <span class="kw">|</span> <span class="fu">grep</span> -c <span class="st">&quot;T&quot;</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="fu">cat</span> <span class="op">&lt;</span>archivo<span class="op">&gt;</span> <span class="kw">|</span> <span class="fu">grep</span> -c <span class="st">&quot;A&quot;</span></span></code></pre></div>
 </div>
 <div id="ejemplo-wc" class="section level3">
 <h3>Ejemplo WC</h3>
@@ -3263,9 +3269,9 @@ G</code></pre>
 </tbody>
 </table>
 <p>En este caso es preferible reemplazar <code>/home/qiime2</code> por una <strong>variable de ambiente</strong> <code>$DATOS</code> que apunta al directorio donde están.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># Probamos el comando</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a><span class="co"># Significa -recursive substitute/A/B/global &lt;archivo&gt;</span></span>
-<span id="cb10-3"><a href="#cb10-3"></a><span class="fu">sed</span> -r <span class="st">&#39;s/\/home\/qiime2/\$DATOS/g&#39;</span> procesar.tsv <span class="kw">|</span> <span class="fu">head</span> -5</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># Probamos el comando</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="co"># Significa -recursive substitute/A/B/global &lt;archivo&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="fu">sed</span> -r <span class="st">&#39;s/\/home\/qiime2/\$DATOS/g&#39;</span> procesar.tsv <span class="kw">|</span> <span class="fu">head</span> -5</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -3298,7 +3304,7 @@ G</code></pre>
 </tbody>
 </table>
 <p>Validando que el reemplazo funciona, podemos hacerlo definitivo con <code>-i</code> <em>in-place</em></p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">sed</span> -i <span class="st">&#39;s/\/home\/qiime2/\$DATOS/g&#39;</span> procesar.tsv</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">sed</span> -i <span class="st">&#39;s/\/home\/qiime2/\$DATOS/g&#39;</span> procesar.tsv</span></code></pre></div>
 <ul>
 <li><p>Podemos reemplazar multiples <code>-e</code>xpresiones en un unico comando <code>sed -e &#39;s/&lt;regex&gt;/&lt;reemplazar&gt;/&#39; -e &#39;s/&lt;regex&gt;/&lt;reemplazar&gt;/&#39; &lt;archivo&gt;</code></p></li>
 <li><p>O usar otro caracter que no sea usado en nuestro reemplazo, en lugar de <code>/</code> <code>sed &#39;s#&lt;regex&gt;#&lt;reemplazar&gt;#&#39; &lt;archivo&gt;</code></p></li>
@@ -3307,21 +3313,49 @@ G</code></pre>
 </div>
 <div id="editores" class="section level2">
 <h2>Editores</h2>
-<!-- TODO: terminar los ejemplos de los editores -->
 <div id="nano" class="section level3">
 <h3>Nano</h3>
 <p>Este es el editor más familiar, con un modo de edición similar a Notepad, Word, cualquier programa general de texto.</p>
+<ul>
+<li><code>^C</code> significa <code>Ctrl</code> <code>C</code>. Por ejemplo, para guardar y salir es <code>^X</code>, o <code>Ctrl</code> <code>x</code></li>
+<li><code>M-6</code> significa <code>Macro</code> <code>6</code>. Usualmente la tecla <em>macro</em> está mapeada a <code>Alt</code></li>
+</ul>
 </div>
 <div id="vi" class="section level3">
 <h3>Vi</h3>
-<p>Vi es cool si tienen que escribir codigo, y tiene un <em>paradigma</em>.</p>
+<p>Vi es un editor enfocado en código, por lo que el paradigma es distinto a los de un editor comun como Notepad. En primer lugar, <em>vi</em> tiene varios modos operativos.</p>
+<ul>
+<li><strong>Normal</strong>, <code>Esc</code> en que espera otros modos</li>
+<li><strong>Insert</strong>, <code>i</code> en que inserta texto normalmente, como seria Notepad.</li>
+<li><strong>Replace</strong>,<code>R</code> en que reemplazamos el bufer preexistente, como modo <em>insert</em></li>
+<li><strong>Command</strong>,<code>:</code> para comandos asignables como <code>:comando</code>, por ejemplo <code>:wq!</code> <em>Writte Quit (all)</em></li>
+</ul>
+<p>Luego, existen comandos distintos para hacer cosas en modo Normal</p>
+<ul>
+<li><code>O</code> y <code>o</code> señalan crear una nueva linea arriba o abajo de la actual</li>
+<li>Usamos <code>h</code> o <code>l</code> para movernos irquierda o derecha</li>
+<li>Usamos <code>j</code> o <code>k</code> para movernos arriba o abajo</li>
+<li><code>x</code> elimina caracteres. <code>5x</code> elimina 5 caracteres</li>
+<li><code>dw</code> elimina palabras. <code>5dw</code> elimina 5 palabras</li>
+<li><code>dd</code> elimina una linea. <code>5dd</code> eliminaria 5 lineas</li>
+<li><code>.</code> repite el ultimo comando. Por ejemplo <code>5dw</code> <code>.</code> eliminaria 10 palabras</li>
+</ul>
+<p>Existen muchas más opciones para Vi y sus derivados, como Vim. Varios programas, como VS Code, aceptan una sintaxis como Vi, dado que resulta más rapida para escribir código. <a href="https://ss64.com/vi.html">ss64</a> tiene un cheatsheet rapido de Vi. <a href="https://en.wikibooks.org/wiki/Learning_the_vi_Editor">Wikibooks</a> tiene un libro sobre Vi y Vim.</p>
 </div>
 </div>
 <div id="manipulando-computadoras-remotas-via-ssh" class="section level2">
 <h2>Manipulando computadoras remotas via SSH</h2>
 <p><em>Secure SHell</em> es un programa presente en Linux y Windows (activado por defecto en las ultimas versiones), que permite establecer conexion a un host remoto a travez de una linea encriptada.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">ssh</span> demo@<span class="op">&lt;</span>DIRECCIÓN DE LA MAQUINA<span class="op">&gt;</span></span>
-<span id="cb12-2"><a href="#cb12-2"></a><span class="fu">touch</span> <span class="op">&lt;</span>NOMBRE<span class="op">&gt;</span>.txt</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1"></a><span class="co"># Ejemplo de está clase</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="fu">ssh</span> demo@<span class="op">&lt;</span>DIRECCIÓN DE LA MAQUINA<span class="op">&gt;</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="co"># Pass es &quot;demo1234&quot;</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a></span>
+<span id="cb15-5"><a href="#cb15-5"></a><span class="co"># Creando un archivo con su nombre</span></span>
+<span id="cb15-6"><a href="#cb15-6"></a><span class="fu">touch</span> <span class="op">&lt;</span>NOMBRE<span class="op">&gt;</span>.txt</span>
+<span id="cb15-7"><a href="#cb15-7"></a></span>
+<span id="cb15-8"><a href="#cb15-8"></a><span class="co"># Tambien pueden usar vi o nano</span></span>
+<span id="cb15-9"><a href="#cb15-9"></a><span class="co"># vi   &lt;NOMBRE&gt;.txt</span></span>
+<span id="cb15-10"><a href="#cb15-10"></a><span class="co"># nano &lt;NOMBRE&gt;.txt</span></span></code></pre></div>
 <div id="copiando-archivos-entre-remotos-y-locales-con-scp" class="section level3">
 <h3>Copiando archivos entre remotos y locales con SCP</h3>
 <ul>
@@ -3332,21 +3366,17 @@ G</code></pre>
 <li><code>scp -r &lt;remoto&gt;:&lt;directorio-remoto&gt; &lt;local&gt;</code> para copiar un directorio remoto a local</li>
 </ul></li>
 </ul>
-<p>SCP funciona para transferencias pequeñas, como scripts (.Rmd, .py) o archivos de datos individuales. Para transferir cantidades más grandes de datos, podemos usar</p>
+<p>Manualmente, SCP funciona para transferencias pequeñas, como scripts (.Rmd, .py) o archivos de datos individuales. Para transferir cantidades más grandes de datos (10s GB; 100+ archivos), podemos usar <a href="https://rsync.samba.org/">RSync</a>, abrir el servicio <a href="https://security.appspot.com/vsftpd.html">SFTP</a> de la maquina Linux, o usar servicios gestionados como Dropbox, Google Drive, OneDrive, etc; que resultan más convenientes.</p>
 </div>
 <div id="acceso-a-leftraru---servidor-de-supercomputo-de-beacuhef" class="section level3">
 <h3>Acceso a Leftraru - Servidor de Supercomputo de Beacuhef</h3>
-<p><a href="https://wiki.nlhpc.cl/Tutorial_de_acceso_a_Leftraru_via_SSH">Guia</a></p>
-</div>
-<div id="comportamientos-extraños-en-windows" class="section level3">
-<h3>Comportamientos extraños en Windows</h3>
-<p>TODO: como se hace para que añada credenciales al archivo de configuración?</p>
+<p><a href="https://wiki.nlhpc.cl/Tutorial_de_acceso_a_Leftraru_via_SSH">Guia</a> para conectarse mediante SSH al Laboratorio Nacional para Computación de Alto Rendimiento.</p>
 </div>
 <div id="sacrificando-una-ec2-para-que-vean-porque-root-es-demasiado-poderoso" class="section level3">
 <h3>SACRIFICANDO UNA EC2 para que vean porque root es demasiado poderoso</h3>
 <p>En casi todo sistema, es mala idea correr comandos como administrador.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">sudo</span> rm -fr ./</span>
-<span id="cb13-2"><a href="#cb13-2"></a><span class="fu">sudo</span> rm -fr  /</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">sudo</span> rm -fr ./</span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="fu">sudo</span> rm -fr  /</span></code></pre></div>
 </div>
 </div>
 </div>
@@ -3371,7 +3401,7 @@ G</code></pre>
 <h2>Instalando git</h2>
 <div id="en-windows" class="section level3">
 <h3>En Windows</h3>
-<div class="sourceCode" id="cb14"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb14-1"><a href="#cb14-1"></a>choco install git --yes</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb17-1"><a href="#cb17-1"></a>choco install git --yes</span></code></pre></div>
 </div>
 <div id="en-linux" class="section level3">
 <h3>En Linux</h3>
@@ -3379,7 +3409,7 @@ G</code></pre>
 </div>
 <div id="comprobando-la-instalación" class="section level3">
 <h3>Comprobando la instalación</h3>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">git</span> version <span class="co"># muestra la versión</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">git</span> version <span class="co"># muestra la versión</span></span></code></pre></div>
 <pre><code>git version 2.29.2.windows.1</code></pre>
 </div>
 </div>

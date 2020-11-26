@@ -22,10 +22,10 @@ Muchos programas de bioinformatica no poseen una interfaz grafica, solo usando l
 - Ejecutar acciones complejas, como configurar multiples clusters desde un unico `.config`
 - La mayor parte de los programas tiene un CLI pero no necesariamente un GUI, especialmente programas nicho como los usados en Ciencia. 
     - Hadoop, Slurm
-    - Clusters de computo: CERN, Laftraru, etc. 
+    - Clusters de computo: CERN, Leftraru, etc. 
     - AWS-CLI
 
-## Terminales más usadas
+## Shells más usadas
 
 - [PowerShell](https://microsoft.com/powershell) en Windows. Es más un lenguaje de scripting que una shell interactiva
 - [BASH](https://www.gnu.org/software/bash/) _Bourne Again SHell_ en la mayor parte de los sistemas Linux. 
@@ -142,6 +142,12 @@ y como manejan comandos multilinea, `\` y `` ` `` respectivamente.
 La parte más compleja y menos interoperable es cuando usamos comandos con `-parametros`.
 
 ## Navegación del sistema
+   
+- `ls` es _LiSt_, mapeado a _Get-ChilItem_ en Powershell. 
+    - `ls -a` lista todos los objetos en el directorio, incluyendo ocultos
+    - `ls -lh` genera una lista en formato lista, con permisos, dueños, grupos, tamaño, etc.
+    - `ls -r1 | sort | uniq -c | sort -nr` permite listar rapidamente archivos duplicados (por nombre) en un directorio y subdirectorios
+    - **Los parametros no funcionan en Get-ChildItem**
 
 - `cd` es _Change Directory_, mapea _Set-Directory_ en Powershell. 
     - `cd /un/path/especifico` cambia a un directorio segun un path directo o relativo  
@@ -149,13 +155,7 @@ La parte más compleja y menos interoperable es cuando usamos comandos con `-par
     - `cd ..` permite subir al directorio superior, como en `/home/directory` a `/home`  
     - `cd -` es para volver rapidamente al directorio anterior. Util si cambian rapidamente entre un sub-sub-subdirectorio  
     - **Los paths usan `\` en Windows. `/` no funciona**
-    
-- `ls` es _LiSt_, mapeado a _Get-ChilItem_ en Powershell. 
-    - `ls -a` lista todos los objetos en el directorio, incluyendo ocultos
-    - `ls -lh` genera una lista en formato lista, con permisos, dueños, grupos, tamaño, etc.
-    - `ls -r1 | sort | uniq -c | sort -nr` permite listar rapidamente archivos duplicados (por nombre) en un directorio y subdirectorios
-    - **Los parametros no funcionan en Get-ChildItem**
-    
+
 - `mkdir` es _MaKe DIRectory_, mapea a _New-Item_ en Powershell. 
     - En *nix podemos crear multiples directorios y subdirectorios como ``mkdir Directorio/{Sub1, Sub2, Sub3}``
     - En Powershell necesitamos una sintaxis explicita; ie. ``mkdir Directorio\Sub1, Directorio\Sub2, ...``
@@ -231,7 +231,6 @@ Expand-Archive ejemplo.zip Ejemplo # PowerShell
 ```bash
 cd Ejemplo       # Entra al directorio descomprimido
 cat script.r     # Explorando el script
-Rscript script.r # Ejecutandolo
 ```
 
 <!-- AQUI SE ROMPE COMPATIBILIDAD CON WINDOWS NATIVO -->  
@@ -408,7 +407,8 @@ que permite establecer conexion a un host remoto a travez de una linea encriptad
 
 ```bash
 # Ejemplo de está clase
-ssh demo@<DIRECCIÓN DE LA MAQUINA>
+# ssh <USUARIO>@<DIRECCIÓN DE LA MAQUINA>
+ssh demo@44.241.92.235 # Maquina demo
 # Pass es "demo1234"
 
 # Creando un archivo con su nombre
