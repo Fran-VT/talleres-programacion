@@ -182,7 +182,7 @@ La parte más compleja y menos interoperable es cuando usamos comandos con `-par
     - `curl <url> -o <archivo>` es valido en Windows base
 
 ```bash
-curl "URL_REEMPLAZAR" -o "ejemplo.zip" # Descargando un ejemplo
+curl "https://datosrnaseq.s3.amazonaws.com/ejemplo.zip" -o "ejemplo.zip" # Descargando un ejemplo
 ```
 
 ## Descomprimiendo archivos
