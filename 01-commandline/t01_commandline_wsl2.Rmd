@@ -1,7 +1,7 @@
 ---
 {title: "Linea de comandos", subtitle: "POSIX en Windows" ,
 date: '2020-11-26',
-author: "Alejandro Acevedo-Aracena, _PhD_^[_FONDECYT Postdoctoral Fellow_, Universidad de Chile, deepen.data@gmail.com]; Manuel Muñoz-González^[_Pregrado_, Universidad de Chile]", output: {html_document: {theme: flatly, highlight: tango, toc: true, toc_float: {collapsed: false, smooth_scroll: true}, df_print: paged}, html_notebook: default}}
+author: "Alejandro Acevedo-Aracena, _PhD_^[_FONDECYT Postdoctoral Fellow_, Universidad de Chile, deepen.data@gmail.com]; Manuel Muñoz-González^[_Pregrado_, Universidad de Chile]; Roberto Luarte", output: {html_document: {theme: darkly, highlight: breezedark, toc: true, toc_float: {collapsed: false, smooth_scroll: true}, df_print: paged}, html_notebook: default}}
 ---
 
 # Terminal, shells, y niveles de abstracción
@@ -23,7 +23,7 @@ Muchos programas de bioinformatica no poseen una interfaz grafica, solo usando l
 - La mayor parte de los programas tiene un CLI pero no necesariamente un GUI, especialmente programas nicho como los usados en Ciencia. 
     - Hadoop, Slurm
     - Clusters de computo: CERN, Leftraru, etc. 
-    - AWS-CLI
+    - AWS-CLI, git, rsync, etc.
 
 ## Shells más usadas
 
@@ -157,7 +157,7 @@ La parte más compleja y menos interoperable es cuando usamos comandos con `-par
     - **Los paths usan `\` en Windows. `/` no funciona**
 
 - `mkdir` es _MaKe DIRectory_, mapea a _New-Item_ en Powershell. 
-    - En *nix podemos crear multiples directorios y subdirectorios como ``mkdir Directorio/{Sub1, Sub2, Sub3}``
+    - En *nix podemos crear multiples directorios y subdirectorios como ``mkdir -p Directorio/{Sub1,Sub2,Sub3}`` (sin espacios, solo `,`)
     - En Powershell necesitamos una sintaxis explicita; ie. ``mkdir Directorio\Sub1, Directorio\Sub2, ...``
     
 - `ln`,es _LiNk_, no existe un map directo en Powershell. 
@@ -165,6 +165,8 @@ La parte más compleja y menos interoperable es cuando usamos comandos con `-par
     - `ln -sf <target> <link>` permite actualizar el vinculo simbolico
     - **Una opción en Windows es desempolvar la vieja CMD.exe, y usar `MKLINK`**
     - `MKLINK \D <link> <target>` señala un link de `\D`irectorios
+    - Los links son una forma comoda de apuntar a un archivo/directorio especifico que no está en nuestro ambiente local. 
+      Son comprendidos por el sistema como si el archivo estuviese ahi, a diferencia de un _acceso directo_. 
 
 ## Descargando archivos 
 
@@ -174,7 +176,7 @@ La parte más compleja y menos interoperable es cuando usamos comandos con `-par
 
 - `wget` es _Web GET_, mapeado a _Invoke-WebRequest_ en Powershell. Es el más facil de usar. 
     - `wget <url> <url2…>` descarga la URL a un archvio con su nombre
-    - `wget -c <url>` permite continuar una descarga interrumpida
+    - `wget -c <url>` permite continuar una descarga interrumpida (muy util para cosas de varios GB)
 
 - `Invoke-WebRequest` requiere un output explicito. 
     - `Invoke-WebRequest <url> -OutFile <archivo>`
@@ -255,10 +257,10 @@ Opciones utiles:
 
 Operadores de expresiones regulares mas utilizados:
 
-"."	hace match con todos los caracteres.	
-"?"	El caracter subsecuente hace match como maximo 1 vez.
-"*"	El caracter subsecuente hace match 0 o mas veces.	
-"+"	El caracter subsecuente hace match 1 o mas veces.	
+``.``	hace match con todos los caracteres.	
+``?``	El caracter subsecuente hace match como maximo 1 vez.
+``*``	El caracter subsecuente hace match 0 o mas veces.	
+``+``	El caracter subsecuente hace match 1 o mas veces.	
 Por lo general querremos usar el comando grep en conjunto de otros comando utilizando pipes.
 
 Por ejemplo:
@@ -358,19 +360,12 @@ _Secure SHell_ es un programa presente en Linux y Windows
 (activado por defecto en las ultimas versiones), 
 que permite establecer conexion a un host remoto a travez de una linea encriptada. 
 
-```bash
-# Ejemplo de está clase
-# ssh <USUARIO>@<DIRECCIÓN DE LA MAQUINA>
-ssh demo@44.241.92.235 # Maquina demo
-# Pass es "demo1234"
-
-# Creando un archivo con su nombre
-touch <NOMBRE>.txt
-
-# Tambien pueden usar vi o nano
-# vi   <NOMBRE>.txt
-# nano <NOMBRE>.txt
-```
+- `ssh <USUARIO>@<IP>` permite conectarse mediante contraseña especificando un `<USUARIO>` en una maquina con cierta `<IP>`
+- `ssh <USUARIO>@<DIRECCIÓN>` funciona si la maquina tiene una dirección de DNS, por ejemplo, `aws-ec2-us-west-1-14df132ax13122300.com`
+    - Pueden obtener direcciones en [DuckDNS.org](https://duckdns.org) o [No-IP](https://www.noip.com/), 
+      para lo cual necesitan configurar un cliente para la DyDNS, y si es una computadora propia, hacer _port-forwarding_ en el router
+- `ssh -i "Downloads/KEY.pem` <USUARIO>@<IP>` permite autentificarnos con una clave criptografica. 
+  Esto elimina la necesidad de una contraseña, y son usadas por multiples plataformas como Azure o AWS para incrementar la seguridad
 
 ### Copiando archivos entre remotos y locales con SCP
 
@@ -392,8 +387,8 @@ o usar servicios gestionados como Dropbox, Google Drive, OneDrive, etc; que resu
 En casi todo sistema, es mala idea correr comandos como administrador. 
 
 ```bash
-sudo rm -fr ./
-sudo rm -fr  /
+sudo rm -fr ./ # Elimina contenidos de la carpeta local
+sudo rm -fr  / # Elimina contenidos de root, aka. el sistema operativo y demás 
 ```
 
 # Extras! - Cosas utiles y git para el proximo taller
