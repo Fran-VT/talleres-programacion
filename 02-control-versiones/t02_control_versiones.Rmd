@@ -1,22 +1,124 @@
 ---
 {title: "Linea de comandos", subtitle: "POSIX en Windows" ,
 date: '2020-11-10',
-author: "Alejandro Acevedo-Aracena, _PhD_^[_FONDECYT Postdoctoral Fellow_, Universidad de Chile, deepen.data@gmail.com]; Manuel Muñoz-González^[_Pregrado_, Universidad de Chile]", output: {html_document: {theme: flatly, highlight: tango, toc: true, toc_float: {collapsed: false, smooth_scroll: true}, df_print: paged, code_folding: show}, html_notebook: default}}
+author: "Alejandro Acevedo-Aracena, _PhD_^[_FONDECYT Postdoctoral Fellow_, Universidad de Chile, deepen.data@gmail.com]; Manuel Muñoz-González^[_Pregrado_, Universidad de Chile]", output: {html_document: {theme: darkly, highlight: breezedark, toc: true, toc_float: {collapsed: false, smooth_scroll: true}, df_print: paged}, html_notebook: default}}
 ---
+<!--
+Los graficos fueron hechos con rGraphviz
+BiocManager::install("Rgraphviz")
+-->
+# Control de versiones
 
-# Git
+## ¿Porque usar control de versiones?
+
+1. Podemos mantener una versión estable que sabemos que funciona, y seguir iterando con la capacidad de comparar para ver como surgen bugs, o como un bug se resolvio anteriormente.
+2. Podemos crear versiones _alternas_, por ejemplo si necesitamos que un workflow tenga cambios especificos que no necesitamos en el resto. 
+3. Facilita la colaboración en proyectos grandes con multiples componentes. 
+
+## Git
 
 _Gran Innovación Tecnologica_ o _Gasto Inutil de Tiempo_, dependiendo de como les funcione. 
 
-TODO: Explicar el modelo de redes de git para la construcción de un historial de versiones. 
+Git es una herramienta de control de versiones que se basa en el principio de un arbol de grafos. 
+Esto permite que sea un control distribuido, sin depender de un sistema central (aunque a menudo este es el caso). 
+Los cambios son a nivel del contenido de los archivos, lo que permite que operaciones como cambios de nombre o la adición de unas pocas lineas sean eficientes en memoria y ancho de banda. 
 
-## Instalando Git
+```{r Carga librerias, include=FALSE}
+library(Rgraphviz)
+library(DiagrammeR)
+```
+
+```{r Grafico theory tree, echo=FALSE, fig.height=5, fig.width=3}
+grViz("
+digraph boxes_and_circles {
+  graph [overlap = true, fontsize = 10]
+  
+        # Master
+        node [shape = circle,
+                style=filled,
+                fillcolor = HotPink,
+                fixedsize = true,
+                width = 0.8] // sets as circles
+        A; B; C; E; 
+        
+        # Merges
+        node [shape = box,
+                style=filled,
+                fillcolor = HotPink,
+                fontname = Helvetica]
+        D;
+
+  subgraph cluster_1 {
+        color=lightgrey;
+        label = 'Primer usuario';
+        node [shape = circle,
+                style=filled,
+                fixedsize = true,
+                fillcolor = Cyan,
+                width = 0.5] // sets as circles
+        A1; A2; A3; A4; A5; A6;
+  }
+
+  subgraph cluster_2 {
+	color=lightgrey;
+        label = 'Segundo usuario';
+        node [shape = circle,
+                style=filled,
+                fillcolor = Green,
+                fixedsize = true,
+                width = 0.5] // sets as circles
+        B1; B2; B3;
+          subgraph cluster_2 {
+                node [shape = circle,
+                style=filled,
+                fillcolor = Green,
+                fixedsize = true,
+                width = 0.5] // sets as circles
+                B11; B12; 
+          }
+  }
+  
+  # several 'edge' statements
+  A->B [style=dashed]
+  B->C [style=dashed]
+  C->D [style=dashed]
+  D->E
+  A->A1 B->B1 
+  
+  A1->A2 A2->A3 A3->A4 A4->A5 A5->A6
+  A3->B A5->C A6->D
+  
+  B1->B11 B11->B12 B12->B2 B2->B3 
+  B1->B2 [style=dashed]
+  B3->D
+}
+")
+```
+
+## Limitaciones
+
+1. La interfaz de _git_ es nefasta. Existen prefacios en libros sobre lo nefasta que es. 
+   Afortunadamente, varios programas como _VS Code_ incorporan plugins que facilitan la interacción
+2. Ciertos formatos (_ehem_ notebooks en Jupyter _ehem_) hacen cambios segun estados, 
+   lo que en efecto es que cambios pequeños en una linea afecten grandes secciones de codigo, removiendo visibilidad del cambio
+3. Los cambios en git se guardan por snapshoot, lo que significa que cambios individuales, 
+   o progreso que se haya hecho internamente y no guardado como commit, no son visibles en el historial de git. 
+4. Git no es colaboración en tiempo real, y de hecho el trabajar en tiempo real puede causar conflictos de _merges_. 
+   Existen otros sistemas que nos sirven para trabajar estilo _Google Docs_, como _Live Share_ o _Teletype_
+
+![XKCD 1597 - git](https://imgs.xkcd.com/comics/git.png)
+
+# Instalando Git
 
 ## En Windows
+
+Utilizando [Chocolatey](chocolatey.org) como habiamos visto en la sesión pasada. 
 
 ```powershell
 choco install git --yes
 ```
+
+Alternativamente, [aquí esta la descarga para Windows](https://git-scm.com/download/windows). 
 
 ## En Linux
 
@@ -42,10 +144,10 @@ Se puede crear una cuenta gratuita, asociada a un correo
 Github acepta varias formas de verificar identidad. La más simple puede ser usar un token de identificación. 
 El token se saca de [Settings/Tokens](https://github.com/settings/tokens).
 
-Deberia ser una cadena como ``Îfb12ab124578ac121223asd1213as1212as12120``
+Deberia ser una cadena como ``afb12ab124578ac121223asd1213as1212as12120``
 
 ```bash
-$GITHUB_TOKEN = Îfb12ab124578ac121223asd1213as1212as12120
+GITHUB_TOKEN=afb12ab124578ac121223asd1213as1212as12120
 git config --global url."https://$GITHUB_TOKEN:x-oauth-basic@github.com/".insteadOf "https://github.com/" 
 ```
 
@@ -65,9 +167,63 @@ git clone <github.tallerdemo.git> taller-git
 
 ## git commit
 
-Un commit es un snapshot del estado actual del repositorio. 
+Un commit es un snapshot del estado actual del repositorio, y usualmente representa un _cambio funcional_ que estamos haciendo sobre el codigo. 
 
-## git pull
+Por ejemplo, añadir una nueva sección de procesamiento, nuevos graficos son un commit, o una nueva función. 
+
+Para crear un commit, necesitamos especificar que archivos vamos a añadir. Esto es porque usualmente modificamos más archivos de los que implican nuestro _cambio funcional_, especialmente si es más de uno a la vez. 
+
+Siguiendo el ejemplo, los archivos modificados para _añadir nuevos graficos_ y _crear una nueva funcion_ debiesen ir en commits separados. 
+
+```bash
+# Añadiendo archivos especificos
+git add arhivo1.txt archivo2.Rmd archivo3.csv
+
+# Añadiendo un grupo de archivos con cierto nombre
+git add figura* *.png
+
+# Usualmente solo añadimos todos los cambios
+git add .
+```
+
+Teniendo esta lista de cambios, podemos crar un commit. 
+Es recomendable darle una descripción detallada. 
+
+```bash
+# Para commit simples usamos solo un titulo corto
+git commit --message "Titulo del commit"
+
+# Para cambios más complejos es recomendable escribir una descripción
+git commit # Esto abrira un editor de texto
+```
+```
+Titulo del commit
+
+Una breve descripción de los cambios hechos y cambios 
+por hacer; en texto plano. Git recomienda hacer lineas
+cortas de maximo 72 caracteres, dado que nativamente no
+es capaz de romper las lineas. 
+
+- Una lista de cambios
+- Como este
+- O este otro
+
+TODO: 
+- Una lista de cosas por hacer
+```
+
+## git pull <remoto> <branch>
+
+Es la sincronización _desde_ un remoto, para bajar los cambios que otros colaboradores han hecho. 
+
+```bash
+# Bajar los cambios del remoto principal
+git pull origin master
+
+# Por defecto git pull usa el origen
+# y autoshtash permite omitir evitar conflicto
+git pull --autostash
+```
 
 ## git push <remote> <branch>
 
@@ -75,9 +231,38 @@ Al clonar desde un repositorio, como `https:github.git`, se crea automaticamente
 
 ```bash
 git push origin master
+git push origin main
 ```
 
 En el caso de github, se requiere autorización previa e identificación para poder hacer push a un repo. 
+
+## .gitignore
+
+El archivo `.gitignore` es una lista de cosas que por defecto _git_ ignorara para cambios. 
+Lo usamos para evitar sincronizar scrips locales, información personal, pruebas, o datasets de gran tamaño que no es necesario mantener en un repositorio. 
+
+```gitignore
+# Ignora los archivos comprimidos
+**/*.gz
+**/*.tgz
+**/*.tar
+**/*.zip
+
+# Ignora archivos con un flag local de ignorar
+**/ignora*
+**/test*
+
+# Ambiente y desarrollo de cuadernos
+*.ipynb_checkpoints
+*.RData
+*.Rhistory
+**/tmp
+```
+
+La sintaxis `**/` significa cualquier subdirectorio. 
+
+`.gitignore` puede estar en cada directorio del proyecto, marcando archivos dentro de esos directorios; 
+pero usualmente esta en el directorio raiz del proyecto, para así ser aplicado a todos los subdirectorios. 
 
 # git config
 
@@ -88,6 +273,7 @@ Para acceder a `-e`ditar el archivo
 
 ```bash
 git config --global -e
+# Esto abrira Nano o Vi
 ```
 ```
 [user]
@@ -100,19 +286,19 @@ git config --global -e
         editor = nano
 [alias]
         a = commit --all
-        m = commit --all -m
+        m = commit --all --message
         fk = commit --amend
         l = log --oneline
         ls = log --graph --decorate
         s = status
-        ss = status -s
-        sv = status -v
+        ss = status --short
+        sv = status --verbose
         pa = pull --autostash
         pom = push origin master
         r = remote
         ru = remote get-url --all
         rrm = remote remove
-        ge = config --global -e
+        ge = config --global --edit
 ```
 
 Podemos añadir configuraciones desde comandos sin entrar a editar
@@ -122,8 +308,12 @@ Podemos añadir configuraciones desde comandos sin entrar a editar
 
 # Taller - Experimento colaborativo de filogenia
 
+<!-- # Demo de Live Share -->
+
 # Inicio rápido
 <!-- Esta sección es para consilta rapida -->
+
+_Recitando comandos magicos de Git_ 
 
 - `git clone https://github.com/DeepenData/clases.git` permite descargar el repo. Solo se hace al inicio.
 - `git remote add clases https://github.com/DeepenData/clases.git` añade el repo de GitHub a la lista de remotes, para de ahi hacer los push. El formato <clases> <url...> indica un remote de nombre y dirección. Por defecto, al hacer clone, se crea un remote **origin** que es de donde clonamos el codigo. 
