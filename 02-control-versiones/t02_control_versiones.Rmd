@@ -28,9 +28,9 @@ library(Rgraphviz)
 library(DiagrammeR)
 ```
 
-```{r Grafico theory tree, echo=FALSE, fig.height=5, fig.width=3}
+```{r Grafico theory tree, echo=FALSE, fig.height=8}
 grViz("
-digraph boxes_and_circles {
+digraph git_arbol_de_grafos {
   graph [overlap = true, fontsize = 10]
   
         # Master
@@ -69,6 +69,7 @@ digraph boxes_and_circles {
                 width = 0.5] // sets as circles
         B1; B2; B3;
           subgraph cluster_2 {
+                label = 'Branch experimental';
                 node [shape = circle,
                 style=filled,
                 fillcolor = Green,
@@ -86,11 +87,14 @@ digraph boxes_and_circles {
   A->A1 B->B1 
   
   A1->A2 A2->A3 A3->A4 A4->A5 A5->A6
-  A3->B A5->C A6->D
+  A3->B [label = 'push'] 
+  A5->C [label = 'push'] 
+  A6->D [label = 'push'] 
   
-  B1->B11 B11->B12 B12->B2 B2->B3 
+  B1->B11 [label = 'check Branch…']
+  B11->B12 B12->B2 [label = 'merge'] B2->B3  
   B1->B2 [style=dashed]
-  B3->D
+  B3->D [label = 'push'] 
 }
 ")
 ```
