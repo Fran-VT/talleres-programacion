@@ -1,0 +1,57 @@
+---
+title: "forma 1"
+output: html_notebook
+---
+
+
+
+```{r}
+install.packages("phangorn", dep = TRUE)
+install.packages("ape")
+library(stats)
+library(ade4)
+library(ape)
+library(phangorn)
+library(ggplot2)
+library(tidyverse)
+```
+
+```{r}
+myFirstAlignment <- readRDS(file= "Alineamiento_ORF1ab_17_seqs.rds")
+
+label<-myFirstAlignment@unmasked %>% names()
+label %<>% str_replace('[A-Z]+.\\d+.\\d.','') %>% str_replace('(c|C)ovid|COVID','') %>% str_replace_all('ORF1ab|Orf1ab','') %>%
+            trimws
+names(myFirstAlignment@unmasked ) <- label
+test <- as.DNAbin(myFirstAlignment) 
+D <- dist.dna(test, model = "TN93")
+temp <- as.data.frame(as.matrix(D)) 
+tabla <-table.paint(temp, cleg = 0, clabel.row = 0.5, clabel.col = 0.5)
+```
+
+```{r}
+tree <- hclust(D)
+plot(tree, cex = 0.6)
+title("Un arbol utilizando NJ")
+```
+
+```{r}
+plot(tree, type = "unrooted", show.tip = FALSE)
+title("Unrooted NJ tree")
+tiplabels(label, cex = 0.5, fg= "transparent")
+```
+
+```{r}
+# podriamos tomar uno de los genes mas ancestrales y utilizarlos como raiz
+tre2 <- root(tree, out = 1) ### out = 1 es el primer archivo de el archivo de anotaciones.
+plot(tre2, show.tip = FALSE, edge.width = 2)
+title("Rooted NJ tree")
+tiplabels(label, cex = 0.5, fg = "transparent")
+axisPhylo()
+```
+
+
+
+
+
+
