@@ -1,0 +1,70 @@
+---
+title: "forma 1"
+output: html_notebook
+---
+
+
+
+```{r}
+install.packages("phangorn", dep = TRUE)
+install.packages("ape")
+library(stats)
+library(ade4)
+library(ape)
+library(phangorn)
+library(ggplot2)
+library(tidyverse)
+```
+
+```{r}
+myFirstAlignment <- readRDS(file= "Alineamiento_ORF1ab_17_seqs.rds")
+
+label<-myFirstAlignment@unmasked %>% names()
+label %<>% str_replace('[A-Z]+.\\d+.\\d.','') %>% str_replace('(c|C)ovid|COVID','') %>% str_replace_all('ORF1ab|Orf1ab','') %>%
+            trimws
+names(myFirstAlignment@unmasked ) <- label
+test <- as.DNAbin(myFirstAlignment)
+```
+
+
+```{r}
+## modelo Tamura&Nei, permite distintas frecuenias de transiciones y transversiones y tasas de sustitucion
+#K81,F84, BH87,T92,TN93, GG95, logdet, paralin, indel, indelblock ,<--- estos son los modelos disponibles
+nombre_figura <- ".*.png" 
+png(file=nombre_figura, width=600, height=350)
+D <- dist.dna(test, model = "TN93") ##cambia el modelo de calculo de distancia
+temp <- as.data.frame(as.matrix(D)) 
+tabla <-table.paint(temp, cleg = 0, clabel.row = 0.5, clabel.col = 0.5)
+
+dev.off()
+```
+
+```{r}
+nombre_figura <- ".*.png" ## edita el nombre de tu figura
+png(file=nombre_figura, width=600, height=350)
+tre3 <- as.phylo(hclust(D, method = "average"))
+plot(tre3, cex = 0.5)
+title("UPGMA tree") ##agrega tu firma
+dev.off()
+```
+
+
+```{r}
+nombre_figura <- ".*.png" 
+png(file=nombre_figura, width=600, height=350)
+y <- as.vector(as.dist(cophenetic(tre3)))
+plot(x, y, xlab = "original distance", ylab = "distance in the tree",
+        main = "Is UPGMA appropriate?", pch = 20, col = transp("black",
+                                                                + 0.1), cex = 3)
+abline(lm(y ~ x), col = "red")
+cor(x, y)^2
+dev.off()
+```
+
+
+
+
+
+
+
+
