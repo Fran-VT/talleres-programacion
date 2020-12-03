@@ -1,0 +1,171 @@
+---
+title: "Ejemplo Filogenia"
+output: html_notebook
+---
+. 
+
+```{r}
+install.packages("adegenet", dep =TRUE)
+install.packages("adegenet", repos = "http://r-forge.r-project.org")
+install.packages("phangorn", dep = TRUE)
+install.packages("ape")
+library(stats)
+library(ade4)
+library(ape)
+library(adegenet)
+library(phangorn)
+library(ggplot2)
+library(tidyverse)
+```
+
+
+```{r fig.height=4, fig.width=8}
+myFirstAlignment <- readRDS(file= "Alineamiento.rds")
+test <- as.DNAbin(myFirstAlignment) 
+label<-myFirstAlignment@unmasked %>% names()
+
+ ## modelo Tamura&Nei, permite distintas frecuenias de transiciones y transversiones y tasas de sustitucion
+
+#K81,F84, BH87,T92,TN93, GG95, logdet, paralin, indel, indelblock ,<--- estos son los modelos disponibles
+D <- dist.dna(test, model = "TN93")
+temp <- as.data.frame(as.matrix(D)) 
+tabla <-table.paint(temp, cleg = 0, clabel.row = 0.5, clabel.col = 0.5) 
+```
+
+
+```{r}
+tree <- nj(D)
+plot(tree, cex = 0.6)
+title("Un arbol utilizando NJ")
+# existen muchas metodologias para graficar arboles "plot.phylo "para ver mas
+#por ejemplo utilizar el color rojo como un marcador de gen "ancestral" y azul de gen "reciente
+```
+
+
+```{r}
+plot(tree, show.tip = FALSE)
+title("Unrooted NJ tree")
+myPal <- colorRampPalette(c("red", "yellow", "green", "blue"))
+tiplabels(label, cex = 0.5, fg = "transparent")
+
+```
+
+
+```{r fig.height=8, fig.width=8}
+## Un error comun al intrepretar arboles filogeneticos es que lo que esta mas hacia la izquierda implica una temporalidad mas ancestral a no ser de que el arbol tenga alguna raiz.
+plot(tree, type = "unrooted", show.tip = FALSE)
+title("Unrooted NJ tree")
+tiplabels(label, cex = 0.5, fg= "transparent")
+```
+
+
+```{r}
+# podriamos tomar uno de los genes mas ancestrales y utilizarlos como raiz
+
+tre2 <- root(tree, out = 1) ### out = 1 es el primer archivo de el archivo de anotaciones.
+plot(tre2, show.tip = FALSE, edge.width = 2)
+title("Rooted NJ tree")
+tiplabels(label, cex = 0.5, fg = "transparent")
+axisPhylo()
+
+```
+
+```{r}
+####Calidad del arbol y testeo del metodo#####
+x <- as.vector(D) ## distancia sacada de la matriz
+y <- as.vector(as.dist(cophenetic(tre2))) ### distancia post NJ
+plot(x, y, xlab = "Distancia original", ylab = "Distancia en el arbol",
+        main = "Is NJ appropriate?", pch = 20, col = transp("black",
+                                                             + 0.1), cex = 3)
+abline(lm(y ~ x), col = "red")
+cor(x, y)^2
+```
+
+
+
+
+```{r}
+### UPMGA
+tre3 <- as.phylo(hclust(D, method = "average"))
+plot(tre3, cex = 0.5)
+title("UPGMA tree")
+
+ y <- as.vector(as.dist(cophenetic(tre3)))
+plot(x, y, xlab = "original distance", ylab = "distance in the tree",
+        main = "Is UPGMA appropriate?", pch = 20, col = transp("black",
+                                                                + 0.1), cex = 3)
+abline(lm(y ~ x), col = "red")
+cor(x, y)^2
+```
+
+
+```{r}
+## otra forma de validar los arboles muy comunmente utilizada son los metodos de bootstrap o "remuestreo", que samplean los nucleotidos con reemplazo y reconstruyen la filogenia.
+# en la practica estre procedimiento se itera muchas veces.
+myBoots <- boot.phylo(tre2, test, function(e) root(nj(dist.dna(e,
+                                                                 model = "TN93")), 1))
+myBoots
+# El numero de veces que cada nodo fue identificado en el remuestro puede ser representado de la siguiente manera, lo mismo que tenemos en el "myBoots"
+plot(tre2, show.tip = FALSE, edge.width = 2)
+title("NJ tree + bootstrap values")
+tiplabels(label, cex = 0.5, fg = "transparent")
+nodelabels(myBoots, cex = 0.6)
+```
+
+
+```{r}
+#### Cuando hay nodos debiles se pueden colapsar utilizando el numero de representaciones 70 en este caso 
+temp <- tre2
+N <- length(tre2$tip.label)
+toCollapse <- match(which(myBoots < 70) + N, temp$edge[, 2])
+temp$edge.length[toCollapse] <- 0
+tre3 <- di2multi(temp, tol = 1e-05)
+plot(tre3, show.tip = FALSE, edge.width = 2)
+title("NJ tree after collapsing weak nodes")
+tiplabels(label, cex = 0.5, fg = "transparent")
+```
+
+
+```{r}
+### Filogenia de maxima parsimonia...
+dna2 <- as.phyDat(test)
+tre.ini <- nj(dist.dna (test, model ="raw"))
+parsimony (tre.ini,dna2)
+tre.pars <- optim.parsimony(tre.ini, dna2)
+
+
+plot(tre.pars, type = "unr", show.tip = FALSE, edge.width = 2)
+title("Maximum-parsimony tree")
+tiplabels(label, cex = 0.45, fg = "transparent")
+
+```
+
+
+```{r}
+### Maximum likelihood phylogenies 
+tre.ini <- nj(dist.dna(test, model = "TN93"))
+tre.ini
+pml(tre.ini, dna2, k = 4)
+na.posi <- which(apply(as.character(secuencia), 2, function(e) any(!e %in%
+                                                                 c("a", "t", "g", "c"))))
+temp <- apply(as.character(secuencia), 2, function(e) sum(!e %in% c("a",
+                                                               "t", "g", "c")))
+
+plot(temp, type = "l", col = "blue", xlab = "Position in HA segment",ylab = "Number of NAs")
+
+dna3 <- test[, -na.posi]
+dna4 <- as.phyDat(dna3)
+tre.ini <- nj(dist.dna(dna3, model = "TN93"))
+fit.ini <- pml(tre.ini, dna4, k = 4)
+fit <- optim.pml(fit.ini, optNni = TRUE, optBf = TRUE, optQ = TRUE,
+                  optGamma = TRUE)
+tre4 <- root(fit$tree, 1)
+plot(tre4, show.tip = FALSE, edge.width = 2)
+title("Maximum-likelihood tree")
+tiplabels(label, cex = 0.5, fg = "transparent")
+```
+
+
+
+
+
