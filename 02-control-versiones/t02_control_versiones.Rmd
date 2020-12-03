@@ -310,9 +310,59 @@ Podemos añadir configuraciones desde comandos sin entrar a editar
 - `git config --global user.name "NOMBRE APELLIDO"` configura el nombre que firmará git
 - `git config --global user.email "MAIL@MAIL"` configura el mail que firmará git
 
-# Taller - Experimento colaborativo de filogenia
+# Demo - Experimento colaborativo de filogenia
 
-<!-- # Demo de Live Share -->
+Coronavirus! Pasando de las noticias y la vida diaria a su taller de bioinformatica
+
+```
+# Clonando un repositorio desde git
+git clone 
+```
+
+Aqui existen varios cuadernos con distintos parametros para ordenar una filogenia reducida de SARS-Cov2-19, con varios genomas ya alineados. 
+
+Modifiquen el chunk
+
+```r
+nombre_figura <- ".*.png" 
+...
+```
+
+Corran todo el cuadeno, esto generara una figura `nombre_figura.jpg`. 
+Luego vamos a pushear _solo_ la imagen. 
+
+```bash
+# Subiendo el archivo
+# solo la figura que queremos modificar
+git add figuras/nombre_figura.png  # En Linux/Mac
+git add figuras\\nombre_figura.png # En Windows
+
+
+# Git commit, para guardar el snapshoot
+git commit --message "Crea figura nombre_figura"
+
+# Git push
+git push # asume que es origin main
+```
+
+Para descargar las figuras de los demas se puede hacer un pull desde el remoto
+
+```bash
+git pull
+```
+
+De momento omitimos comandos más complejos como `merge`, `checkout`, `diff`, `blame`, etc. 
+
+# Colaboración en tiempo real
+
+Git es un sistema diseñado para controlar cambios, como muchas personas trabajando en distintos componentes de un proyecto. 
+No esta pensado para trabajar en tiempo real, _a la_ Google Docs, 
+y el usarlo así usualmente es una receta para llamar a _merge conflicts_ y errores más esotericos. 
+
+Para colaboración en tiemo real pueden usar [Live-Share](visualstudio.microsoft.com/services/live-share/), 
+una extensión de _VS Code_ que permite compartir un espacio y trabajar colaborativamente en tiempo real. 
+
+Los cambios se guardan en el espacio del host, y despues de esto es recomendable correr _git add commit push pull_ para sincronizar todo con otros colaboradores y el historial de desarrollo. 
 
 # Inicio rápido
 <!-- Esta sección es para consilta rapida -->
