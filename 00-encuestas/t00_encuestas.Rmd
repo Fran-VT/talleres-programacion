@@ -6,8 +6,8 @@ author: Alejandro Acevedo-Aracena, _PhD_^[_FONDECYT Postdoctoral Fellow_, Univer
 date: '2020-11-10'
 output:
   html_document:
-    theme: flatly
-    highlight: tango
+    theme: darkly
+    highlight: breezedark
     toc: yes
     toc_float:
       collapsed: no

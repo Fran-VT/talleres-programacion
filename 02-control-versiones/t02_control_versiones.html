@@ -4173,8 +4173,8 @@ BiocManager::install("Rgraphviz")
 <h2>Git</h2>
 <p><em>Gran Innovación Tecnologica</em> o <em>Gasto Inutil de Tiempo</em>, dependiendo de como les funcione.</p>
 <p>Git es una herramienta de control de versiones que se basa en el principio de un arbol de grafos. Esto permite que sea un control distribuido, sin depender de un sistema central (aunque a menudo este es el caso). Los cambios son a nivel del contenido de los archivos, lo que permite que operaciones como cambios de nombre o la adición de unas pocas lineas sean eficientes en memoria y ancho de banda.</p>
-<div id="htmlwidget-35336597005ddaf14d29" style="width:672px;height:768px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-35336597005ddaf14d29">{"x":{"diagram":"\ndigraph git_arbol_de_grafos {\n  graph [overlap = true, fontsize = 10]\n  \n        # Master\n        node [shape = circle,\n                style=filled,\n                fillcolor = HotPink,\n                fixedsize = true,\n                width = 0.8] // sets as circles\n        A; B; C; E; \n        \n        # Merges\n        node [shape = box,\n                style=filled,\n                fillcolor = HotPink,\n                fontname = Helvetica]\n        D;\n\n  subgraph cluster_1 {\n        color=lightgrey;\n        label = \"Primer usuario\";\n        node [shape = circle,\n                style=filled,\n                fixedsize = true,\n                fillcolor = Cyan,\n                width = 0.5] // sets as circles\n        A1; A2; A3; A4; A5; A6;\n  }\n\n  subgraph cluster_2 {\n\tcolor=lightgrey;\n        label = \"Segundo usuario\";\n        node [shape = circle,\n                style=filled,\n                fillcolor = Green,\n                fixedsize = true,\n                width = 0.5] // sets as circles\n        B1; B2; B3;\n          subgraph cluster_2 {\n                label = \"Branch experimental\";\n                node [shape = circle,\n                style=filled,\n                fillcolor = Green,\n                fixedsize = true,\n                width = 0.5] // sets as circles\n                B11; B12; \n          }\n  }\n  \n  # several \"edge\" statements\n  A->B [style=dashed]\n  B->C [style=dashed]\n  C->D [style=dashed]\n  D->E\n  A->A1 B->B1 \n  \n  A1->A2 A2->A3 A3->A4 A4->A5 A5->A6\n  A3->B [label = \"push\"] \n  A5->C [label = \"push\"] \n  A6->D [label = \"push\"] \n  \n  B1->B11 [label = \"check Branch…\"]\n  B11->B12 B12->B2 [label = \"merge\"] B2->B3  \n  B1->B2 [style=dashed]\n  B3->D [label = \"push\"] \n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-3185e01634882e05b45b" style="width:672px;height:768px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3185e01634882e05b45b">{"x":{"diagram":"\ndigraph git_arbol_de_grafos {\n  graph [overlap = true, fontsize = 10]\n  \n        # Master\n        node [shape = circle,\n                style=filled,\n                fillcolor = HotPink,\n                fixedsize = true,\n                width = 0.8] // sets as circles\n        A; B; C; E; \n        \n        # Merges\n        node [shape = box,\n                style=filled,\n                fillcolor = HotPink,\n                fontname = Helvetica]\n        D;\n\n  subgraph cluster_1 {\n        color=lightgrey;\n        label = \"Primer usuario\";\n        node [shape = circle,\n                style=filled,\n                fixedsize = true,\n                fillcolor = Cyan,\n                width = 0.5] // sets as circles\n        A1; A2; A3; A4; A5; A6;\n  }\n\n  subgraph cluster_2 {\n\tcolor=lightgrey;\n        label = \"Segundo usuario\";\n        node [shape = circle,\n                style=filled,\n                fillcolor = Green,\n                fixedsize = true,\n                width = 0.5] // sets as circles\n        B1; B2; B3;\n          subgraph cluster_2 {\n                label = \"Branch experimental\";\n                node [shape = circle,\n                style=filled,\n                fillcolor = Green,\n                fixedsize = true,\n                width = 0.5] // sets as circles\n                B11; B12; \n          }\n  }\n  \n  # several \"edge\" statements\n  A->B [style=dashed]\n  B->C [style=dashed]\n  C->D [style=dashed]\n  D->E\n  A->A1 B->B1 \n  \n  A1->A2 A2->A3 A3->A4 A4->A5 A5->A6\n  A3->B [label = \"push\"] \n  A5->C [label = \"push\"] \n  A6->D [label = \"push\"] \n  \n  B1->B11 [label = \"check Branch…\"]\n  B11->B12 B12->B2 [label = \"merge\"] B2->B3  \n  B1->B2 [style=dashed]\n  B3->D [label = \"push\"] \n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="limitaciones" class="section level2">
 <h2>Limitaciones</h2>
@@ -4335,9 +4335,36 @@ TODO:
 <li><code>git config --global user.email &quot;MAIL@MAIL&quot;</code> configura el mail que firmará git</li>
 </ul>
 </div>
-<div id="taller---experimento-colaborativo-de-filogenia" class="section level1">
-<h1>Taller - Experimento colaborativo de filogenia</h1>
-<!-- # Demo de Live Share -->
+<div id="demo---experimento-colaborativo-de-filogenia" class="section level1">
+<h1>Demo - Experimento colaborativo de filogenia</h1>
+<p>Coronavirus! Pasando de las noticias y la vida diaria a su taller de bioinformatica</p>
+<pre><code># Clonando un repositorio desde git
+git clone </code></pre>
+<p>Aqui existen varios cuadernos con distintos parametros para ordenar una filogenia reducida de SARS-Cov2-19, con varios genomas ya alineados.</p>
+<p>Modifiquen el chunk</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>nombre_figura &lt;-<span class="st"> &quot;.*.png&quot;</span> </span>
+<span id="cb15-2"><a href="#cb15-2"></a>...</span></code></pre></div>
+<p>Corran todo el cuadeno, esto generara una figura <code>nombre_figura.jpg</code>. Luego vamos a pushear <em>solo</em> la imagen.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1"></a><span class="co"># Subiendo el archivo</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="co"># solo la figura que queremos modificar</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a><span class="fu">git</span> add figuras/nombre_figura.png  <span class="co"># En Linux/Mac</span></span>
+<span id="cb16-4"><a href="#cb16-4"></a><span class="fu">git</span> add figuras<span class="dt">\\</span>nombre_figura.png <span class="co"># En Windows</span></span>
+<span id="cb16-5"><a href="#cb16-5"></a></span>
+<span id="cb16-6"><a href="#cb16-6"></a></span>
+<span id="cb16-7"><a href="#cb16-7"></a><span class="co"># Git commit, para guardar el snapshoot</span></span>
+<span id="cb16-8"><a href="#cb16-8"></a><span class="fu">git</span> commit --message <span class="st">&quot;Crea figura nombre_figura&quot;</span></span>
+<span id="cb16-9"><a href="#cb16-9"></a></span>
+<span id="cb16-10"><a href="#cb16-10"></a><span class="co"># Git push</span></span>
+<span id="cb16-11"><a href="#cb16-11"></a><span class="fu">git</span> push <span class="co"># asume que es origin main</span></span></code></pre></div>
+<p>Para descargar las figuras de los demas se puede hacer un pull desde el remoto</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">git</span> pull</span></code></pre></div>
+<p>De momento omitimos comandos más complejos como <code>merge</code>, <code>checkout</code>, <code>diff</code>, <code>blame</code>, etc.</p>
+</div>
+<div id="colaboración-en-tiempo-real" class="section level1">
+<h1>Colaboración en tiempo real</h1>
+<p>Git es un sistema diseñado para controlar cambios, como muchas personas trabajando en distintos componentes de un proyecto. No esta pensado para trabajar en tiempo real, <em>a la</em> Google Docs, y el usarlo así usualmente es una receta para llamar a <em>merge conflicts</em> y errores más esotericos.</p>
+<p>Para colaboración en tiemo real pueden usar <a href="visualstudio.microsoft.com/services/live-share/">Live-Share</a>, una extensión de <em>VS Code</em> que permite compartir un espacio y trabajar colaborativamente en tiempo real.</p>
+<p>Los cambios se guardan en el espacio del host, y despues de esto es recomendable correr <em>git add commit push pull</em> para sincronizar todo con otros colaboradores y el historial de desarrollo.</p>
 </div>
 <div id="inicio-rápido" class="section level1">
 <h1>Inicio rápido</h1>
